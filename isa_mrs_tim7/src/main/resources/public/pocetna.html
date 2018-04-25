@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<title>Pozorista - bioskopi pocetna</title>
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 
@@ -66,7 +66,7 @@
 		<div style="height:100px"></div>
 		<div class="row">
 			<div class="col-lg-6">
-				<div class="box pozoriste">
+				<div class="box pozoriste" onclick="dobaviPozorista()" style="cursor: pointer;">
 					<img alt="Pozoriste" src="theatre-masks-128.png">
 					<div class="overlay">
     					<div class="text">POZORISTA</div>
@@ -74,7 +74,7 @@
 				</div>
 			</div>
 			<div class="col-lg-6">
-				<div class="box bioskop">
+				<div class="box bioskop" onclick="location.href='#';" style="cursor: pointer;">
 					<img alt="Bioskop" src="film-reel-128.png">
 					<div class="overlay">
     					<div class="text">BIOSKOPI</div>
@@ -84,6 +84,7 @@
 		</div>
 				 		
 	</div>
+	<script src="pozorista.js"></script>
 <script src="webjars/jquery/2.2.3/jquery.min.js"></script>
 <script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
