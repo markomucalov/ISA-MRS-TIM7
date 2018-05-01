@@ -5,6 +5,7 @@
 <title>Pozorista - bioskopi pocetna</title>
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
 
 <style type="text/css">
 	.box
@@ -61,6 +62,26 @@
         height: 400px;
         background-color: grey;
       }
+      
+    .rating-static {
+  		width: 60px;
+  		height: 16px;
+  		display: block;
+  		background: url('http://www.itsalif.info/blogfiles/rating/star-rating.png') 0 0 no-repeat;
+	}
+	
+	.rating-50 { background-position: 0 0; }
+	.rating-40 { background-position: -12px 0; } 
+	.rating-30 { background-position: -24px 0; }
+	.rating-20 { background-position: -36px 0; }
+	.rating-10 { background-position: -48px 0; }
+	.rating-0 { background-position: -60px 0; }
+	 
+	.rating-5  { background-position: -48px -16px; }
+	.rating-15 { background-position: -36px -16px; }
+	.rating-25 { background-position: -24px -16px; }
+	.rating-35 { background-position: -12px -16px; }
+	.rating-45 { background-position: 0 -16px; }
 	
 </style>
 </head>
@@ -88,7 +109,7 @@
 					</div>
 				</div>
 				<div class="col-lg-6">
-					<div class="box bioskop" onclick="location.href='#';" style="cursor: pointer;">
+					<div class="box bioskop" onclick="dobaviBioskope()" style="cursor: pointer;">
 						<img alt="Bioskop" src="film-reel-128.png">
 						<div class="overlay">
     						<div class="text">BIOSKOPI</div>
@@ -105,32 +126,65 @@
 						<h1>POZORISTA</h1>
 					</div>
 					<div class="col-md-4" style="display: flex; justify-content: center; align-items: center;">
-						<button id="na_pocetnu" class="btn btn-primary" onclick="povratakNaPocetnu()">Pocetna</button>
+						<button id="na_pocetnu" class="btn btn-primary" onclick="povratakNaPocetnuPozorista()">Pocetna</button>
 					</div>
 				</div>
 			</div>
 			
-			<table class="table table-hover">
-				<thead>
-      				<tr>
-        				<th>#</th>
-        				<th>Naziv pozorista</th>
-        				<th>Adresa</th>
-        				<th>Udaljenost</th>
-        				<th>Repertoar</th>
-      				</tr>
-    			</thead>
-    			<tbody id="tabela">
+			<div class="scrollable" style="height:200px; overflow-y:scroll">
+				<table class="table table-hover" id="t_pozorista">
+					<thead>
+      					<tr>
+        					<th>#</th>
+        					<th>Naziv pozorista</th>
+        					<th>Adresa</th>
+        					<th>Udaljenost</th>
+        					<th>Rejting</th>
+        					<th>Repertoar</th>
+      					</tr>
+    				</thead>
+    				<tbody id="tabela_pozorista" onclick="preuzmiAdresu('pozorista')">
       			
-    			</tbody>
-  			</table>
-  			
-  			<div id="map"></div>
-		</div>				 		
+    				</tbody>
+  				</table>
+			</div>			
+		</div>
+		<div id="bioskopi_prikaz" hidden="true">
+			<div class="container-fluid">
+				<div class="row-eq-height">
+					<div class="col-md-8">
+						<h1>BIOSKOPI</h1>
+					</div>
+					<div class="col-md-4" style="display: flex; justify-content: center; align-items: center;">
+						<button id="na_pocetnu" class="btn btn-primary" onclick="povratakNaPocetnuBioskopi()">Pocetna</button>
+					</div>
+				</div>
+			</div>
+			
+			<div class="scrollable" style="height:200px; overflow-y:scroll">
+				<table class="table table-hover" id="t_bioskopi">
+					<thead>
+      					<tr>
+        					<th>#</th>
+        					<th>Naziv bioskopa</th>
+        					<th>Adresa</th>
+        					<th>Udaljenost</th>
+        					<th>Rejting</th>
+        					<th>Repertoar</th>
+      					</tr>
+    				</thead>
+    				<tbody id="tabela_bioskopi" onclick="preuzmiAdresu('bioskopi')">
+      			
+    				</tbody>
+  				</table>
+			</div>	
+		</div>
+		<div id="map" hidden="true"></div>				 		
 	</div>
 	<script src="pozorista.js"></script>
 	<script src="webjars/jquery/2.2.3/jquery.min.js"></script>
 	<script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBBD_bkZDOJTqky_ziW-vaYo11m6covg8&callback=initMap"></script>
+	
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBBD_bkZDOJTqky_ziW-vaYo11m6covg8&callback=initMap&libraries=geometry"></script>
 </body>
 </html>

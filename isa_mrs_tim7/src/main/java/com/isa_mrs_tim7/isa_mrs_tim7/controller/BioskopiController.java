@@ -9,21 +9,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isa_mrs_tim7.isa_mrs_tim7.domain.Pozoriste;
-import com.isa_mrs_tim7.isa_mrs_tim7.service.PozoristeService;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.BioskopService;
 
 @RestController
-public class PozoristaController {
-	
+public class BioskopiController {
+
 	@Autowired
-	private PozoristeService pozoristeService;
+	private BioskopService bioskopService;
 	
-	@RequestMapping(value = "/pozorista",
+	@RequestMapping(value = "/bioskopi",
 			method = RequestMethod.GET,
 			produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
-	public Page<Pozoriste> getAllPozorista() {
-	    return pozoristeService.getAllPozorista(PageRequest.of(0, 10));
+	public Page<Bioskop> getAllBioskopi() {
+	    return bioskopService.getAllBioskopi(PageRequest.of(0, 10));
 	}
-
 }
