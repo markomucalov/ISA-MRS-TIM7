@@ -2,6 +2,9 @@
 <html>
 <head>
 <meta charset="ISO-8859-1">
+
+
+
 <title>Pozorista - bioskopi pocetna</title>
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
@@ -94,8 +97,8 @@
       				<a class="navbar-brand" href="#">Pozorista - Bioskopi</a>
     			</div>
 				<ul class="nav navbar-nav navbar-right">
-      				<li><a href="#"><span class="glyphicon glyphicon-user"></span> Kreiraj nalog</a></li>
-      				<li><a href="#"><span class="glyphicon glyphicon-log-in"></span> Uloguj se</a></li>
+      				<li><a href="registracija.html"  onclick="window.open('registracija.html','_self')"><span class="glyphicon glyphicon-user"></span> Kreiraj nalog</a></li>
+      				<li><a href="login.html"  onclick="window.open('login.html','_self')"><span class="glyphicon glyphicon-log-in"></span> Uloguj se</a></li>
     			</ul>
 			</nav>
 			<div style="height:100px"></div>
@@ -181,9 +184,12 @@
 		</div>
 		<div id="map" hidden="true"></div>				 		
 	</div>
+	
+	
 	<script src="pozorista.js"></script>
 	<script src="webjars/jquery/2.2.3/jquery.min.js"></script>
 	<script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+	
 	
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDBBD_bkZDOJTqky_ziW-vaYo11m6covg8&callback=initMap&libraries=geometry"></script>
 </body>
