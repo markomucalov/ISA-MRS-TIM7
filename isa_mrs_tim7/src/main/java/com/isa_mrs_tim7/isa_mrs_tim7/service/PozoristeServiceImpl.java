@@ -40,15 +40,6 @@ public class PozoristeServiceImpl implements PozoristeService {
 		
 		return null;
 		
-		
-		/*Optional<Pozoriste> pronadjeniBioskopId = this.pozoristeRep.findById(pozoriste.getId());
-		*
-		*		if (!pronadjeniBioskopId.isPresent()) {
-			*			// ne postoji pozoriste, unesi ga u bazu
-			*			return this.pozoristeRep.save(pozoriste);
-			*		}
-			*		// pozoriste vec postoji
-			*/		
 	}
 
 	@Override

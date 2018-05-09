@@ -9,6 +9,7 @@ import static com.isa_mrs_tim7.isa_mrs_tim7.constants.PozoristeConstants.DB_REJT
 import static com.isa_mrs_tim7.isa_mrs_tim7.constants.PozoristeConstants.PAGE_SIZE;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -16,22 +17,30 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
+
+import com.isa_mrs_tim7.isa_mrs_tim7.TestUtil;
+import com.isa_mrs_tim7.isa_mrs_tim7.constants.PozoristeConstants;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Adresa;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Pozoriste;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PozoristaControlerTest {
 	
 	private static final String URL_PREFIX = "/pozorista";
+	private static final String URL_PREFIX_DODAVANJE = "/kreiranjePozorista";
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
@@ -56,6 +65,24 @@ public class PozoristaControlerTest {
 				.andExpect(jsonPath("$.content[0].adresa.broj").value(DB_ADRESA_BROJ))
 				.andExpect(jsonPath("$.content[0].adresa.grad").value(DB_ADRESA_GRAD))
 				.andExpect(jsonPath("$.content[0].adresa.zip").value(DB_ADRESA_ZIP));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testSacuvajPozoriste() throws Exception {
+		Pozoriste pozoriste = new Pozoriste();
+		pozoriste.setNaziv(PozoristeConstants.DB_NAZIV);
+		pozoriste.setRejting(PozoristeConstants.DB_REJTING);
+		
+		Adresa adresa = new Adresa();
+		adresa.setUlica(PozoristeConstants.DB_ADRESA_ULICA);
+		adresa.setBroj(PozoristeConstants.DB_ADRESA_BROJ);
+		adresa.setGrad(PozoristeConstants.DB_ADRESA_GRAD);
+		adresa.setZip(PozoristeConstants.DB_ADRESA_ZIP);
+
+		String json = TestUtil.json(pozoriste);
+		this.mockMvc.perform(post(URL_PREFIX_DODAVANJE).contentType(contentType).content(json)).andExpect(status().isOk());
 	}
 
 }

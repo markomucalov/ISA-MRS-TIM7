@@ -41,18 +41,15 @@ public class BioskopiController {
 		try {
 			unesiBioskop = bioskopService.unesiBioskop(b);
 			if (unesiBioskop == null) {
-				//ue.setMessage("Already exist cinema/theater with the same name");
-				//ue.setPlace(createPlace);
-				System.out.println("Postoji");
+				
+				System.out.println("Bioskop vec postoji u bazi!");
 				return null;
 			}
 			
-			//ue.setPlace(createPlace);
-			//ue.setMessage("Place has been successfully created");
 			
 			
 		} catch (Exception e1) {
-			//ue.setMessage(e.getMessage());
+			
 			System.out.println(e);
 			return null;
 		}
