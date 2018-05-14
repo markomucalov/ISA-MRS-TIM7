@@ -83,6 +83,11 @@
 	.rating-35 { background-position: -12px -16px; }
 	.rating-45 { background-position: 0 -16px; }
 	
+	.error
+	{
+ 		border:1px solid red;
+	}
+	
 </style>
 </head>
 <body>
@@ -116,6 +121,9 @@
  	 					</div>
 					</div>
 				</div>
+			</div>
+			<div class="row">
+				<button onclick="ucitajAdminPozBio()">Admin profil</button>
 			</div>
 		</div>
 		
@@ -179,9 +187,12 @@
   				</table>
 			</div>	
 		</div>
-		<div id="map" hidden="true"></div>				 		
+		<div id="map" hidden="true"></div>
+		<div id="adminPB"></div>
+		<div id="repertoarPrikaz" hidden="true"></div>	 		
 	</div>
 	<script src="pozorista.js"></script>
+	<script src="pozoristeBioskopAdmin.js"></script>
 	<script src="webjars/jquery/2.2.3/jquery.min.js"></script>
 	<script src="webjars/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	

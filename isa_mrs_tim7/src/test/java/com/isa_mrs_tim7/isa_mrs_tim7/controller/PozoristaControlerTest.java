@@ -47,7 +47,7 @@ public class PozoristaControlerTest {
 	}
 	
 	@Test
-	public void testGetStudentsPage() throws Exception {
+	public void testGetPozoristaPage() throws Exception {
 		mockMvc.perform(get(URL_PREFIX+"?page=0&size=" + PAGE_SIZE)).andExpect(status().isOk())
 				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(PAGE_SIZE)))
 				.andExpect(jsonPath("$.content[0].naziv").value(DB_NAZIV))
@@ -56,6 +56,27 @@ public class PozoristaControlerTest {
 				.andExpect(jsonPath("$.content[0].adresa.broj").value(DB_ADRESA_BROJ))
 				.andExpect(jsonPath("$.content[0].adresa.grad").value(DB_ADRESA_GRAD))
 				.andExpect(jsonPath("$.content[0].adresa.zip").value(DB_ADRESA_ZIP));
+	}
+	
+	/*@Test
+	public void testGetPozoriste() throws Exception {
+		mockMvc.perform(get("/CineStar Zrenjanin/bioskop")).andExpect(status().isOk())
+				.andExpect(content().contentType(contentType))
+				.andExpect(jsonPath("$.naziv").value(DB_NAZIV))
+				.andExpect(jsonPath("$.rejting").value(DB_REJTING))
+				.andExpect(jsonPath("$.adresa.ulica").value(DB_ADRESA_ULICA))
+				.andExpect(jsonPath("$.adresa.broj").value(DB_ADRESA_BROJ))
+				.andExpect(jsonPath("$.adresa.grad").value(DB_ADRESA_GRAD))
+				.andExpect(jsonPath("$.adresa.zip").value(DB_ADRESA_ZIP));
+	}*/
+	
+	@Test
+	public void testGetFilmoviPage() throws Exception {
+		mockMvc.perform(get("/SNP/predstave/0")).andExpect(status().isOk())
+				.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.content", hasSize(1)))
+				.andExpect(jsonPath("$.content[0].naizv").value("Seviljski berberin"))
+				.andExpect(jsonPath("$.content[0].zanr").value("komedija"))
+				.andExpect(jsonPath("$.content[0].imeReditelja").value("Ivan Klemenc"));
 	}
 
 }

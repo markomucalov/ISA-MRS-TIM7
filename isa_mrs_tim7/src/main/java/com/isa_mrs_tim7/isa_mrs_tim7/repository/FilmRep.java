@@ -5,9 +5,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.repository.Repository;
 
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
 
-public interface BioskopRep extends Repository<Bioskop, Long> {
-	Bioskop findOneByNaziv(String naziv);
-	Page<Bioskop> findAll(Pageable pageable);
-	Bioskop save(Bioskop bioskop);
+public interface FilmRep extends Repository<Film, Long> {
+
+	Page<Film> findByBioskop(Bioskop bioskop, Pageable pageable);
 }

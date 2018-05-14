@@ -26,7 +26,7 @@ public class Adresa implements Serializable {
 	private String ulica;
 	
 	@Column(nullable = false)
-	private Integer broj;
+	private String broj;
 	
 	@Column(nullable = false)
 	private String grad;
@@ -38,11 +38,39 @@ public class Adresa implements Serializable {
 		
 	}
 
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public void setUlica(String ulica) {
+		this.ulica = ulica;
+	}
+
+	public void setBroj(String broj) {
+		this.broj = broj;
+	}
+
+	public void setGrad(String grad) {
+		this.grad = grad;
+	}
+
+	public void setZip(Integer zip) {
+		this.zip = zip;
+	}
+
 	public String getUlica() {
 		return ulica;
 	}
 
-	public Integer getBroj() {
+	public String getBroj() {
 		return broj;
 	}
 

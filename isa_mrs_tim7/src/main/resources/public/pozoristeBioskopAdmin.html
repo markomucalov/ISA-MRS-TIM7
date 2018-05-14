@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Insert title here</title>
+
+<link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
+<link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+</head>
+<body>
+	<div id="profilAdminaPB">
+		<ul class="nav nav-pills nav-justified">
+  			<li class="active"><a data-toggle="pill" href="#pozoriste-bioskop" onclick="postaviPodatkeNaFormu('Takvud%20Cineplexx')">Profil pozorista</a></li>
+  			<li><a data-toggle="pill" href="#repertoar">Repertoar</a></li>
+  			<li><a data-toggle="pill" href="#konfiguracija">Konfuguracija sala</a></li>
+  			<li><a data-toggle="pill" href="#statistika">Izvestaj - statistika</a></li>
+  			<li><a data-toggle="pill" href="#licni-podaci">Licni podaci</a></li>
+		</ul>
+
+		<div class="tab-content">
+  			<div id="pozoriste-bioskop" class="tab-pane fade in active">
+    			<form class="form-horizontal" id="izmenaPozBio" action="#" style="margin-top:50px">
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="naziv">Naziv:</label>
+    					<div class="col-sm-10">
+      						<input type="text" class="form-control" id="naziv" placeholder="Naziv">
+    					</div>
+  					</div>
+  					<div class="form-group">
+  						<h4 style="text-align:center">Adresa</h4>
+  						<div class="row">
+  							<label class="control-label col-sm-2" for="ulica">Ulica:</label>
+   							<div class="col-sm-6"> 
+      							<input type="text" class="form-control" id="ulica" placeholder="Ulica">
+    						</div>
+  						</div>
+  						<div class="row">
+  							<label class="control-label col-sm-2" for="broj">Broj:</label>
+   							<div class="col-sm-6"> 
+      							<input type="text" onblur="check_broj()" class="form-control" id="broj" placeholder="Broj">
+    						</div>
+    						<div class="col-sm-4">
+    							<label class="error_broj_ulice" style="color:red"></label>
+    						</div>
+  						</div>
+  						<div class="row">
+  							<label class="control-label col-sm-2" for="grad">Grad:</label>
+   							<div class="col-sm-6"> 
+      							<input type="text" class="form-control" id="grad" placeholder="Grad">
+    						</div>
+  						</div>
+  						<div class="row">
+  							<label class="control-label col-sm-2" for="zip">Zip:</label>
+   							<div class="col-sm-6"> 
+      							<input type="text" onblur="check_zip()" class="form-control" id="zip" placeholder="Zip kod">
+    						</div>
+    						<div class="col-sm-4">
+    							<label class="error_zip_grada" style="color:red"></label>
+    						</div>
+  						</div>	
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="opis">Promotivni Opis:</label>
+    					<div class="col-sm-10">
+      						<textarea class="form-control" rows="5" id="opis"></textarea>
+    					</div>
+  					</div>
+  					<div class="form-group"> 
+    					<div class="col-sm-offset-2 col-sm-10">
+      						<button type="submit" class="btn btn-default" onclick="check_form('Takvud%20Cineplexx')">Izmeni podatke</button>
+    					</div>
+  					</div>
+				</form>
+  			</div>
+  			<div id="repertoar" class="tab-pane fade">
+    			<h3>U IZRADI</h3>
+  			</div>
+  			<div id="konfiguracija" class="tab-pane fade">
+    			<h3>U IZRADI</h3>
+  			</div>
+  			<div id="statistika" class="tab-pane fade">
+    			<h3>U IZRADI</h3>
+  			</div>
+  			<div id="licni-podaci" class="tab-pane fade">
+    			<h3>U IZRADI</h3>
+  			</div>
+		</div>
+	</div>			
+</body>
+</html>

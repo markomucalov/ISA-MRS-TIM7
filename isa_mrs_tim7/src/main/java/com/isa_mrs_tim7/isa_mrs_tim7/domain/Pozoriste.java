@@ -1,7 +1,7 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.domain;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,16 +9,14 @@ import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 @Entity
@@ -45,37 +43,68 @@ public class Pozoriste implements Serializable {
 	@OneToOne(optional = false)
     private Adresa adresa;
 
-    @Column(nullable = false, updatable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @CreatedDate
-    private Date createdAt;
-
-    @Column(nullable = false)
-    @Temporal(TemporalType.TIMESTAMP)
-    @LastModifiedDate
-    private Date updatedAt;
+	@OneToMany(mappedBy="pozoriste")
+	@JsonManagedReference
+	private List<Predstava> predstave;
+	
+	@Column(nullable = false)
+	private String promotivniOpis;
     
     public Pozoriste() {
 		
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 	public String getNaziv() {
 		return naziv;
 	}
 
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+
 	public Integer getRejting() {
 		return rejting;
+	}
+
+	public void setRejting(Integer rejting) {
+		this.rejting = rejting;
 	}
 
 	public Adresa getAdresa() {
 		return adresa;
 	}
 
-	public Date getCreatedAt() {
-		return createdAt;
+	public void setAdresa(Adresa adresa) {
+		this.adresa = adresa;
 	}
 
-	public Date getUpdatedAt() {
-		return updatedAt;
+	public List<Predstava> getPredstave() {
+		return predstave;
 	}
+
+	public void setPredstave(List<Predstava> predstave) {
+		this.predstave = predstave;
+	}
+
+	public String getPromotivniOpis() {
+		return promotivniOpis;
+	}
+
+	public void setPromotivniOpis(String promotivniOpis) {
+		this.promotivniOpis = promotivniOpis;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	
 }

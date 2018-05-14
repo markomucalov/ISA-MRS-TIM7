@@ -22,7 +22,7 @@ function dobaviPozorista() {
 			cell2.innerHTML = response.content[counter].naziv;
 			cell3.innerHTML = adresaTemp.ulica+" "+adresaTemp.broj+" "+adresaTemp.grad+" "+adresaTemp.zip;
 			cell4.innerHTML = "udaljenost";
-			cell6.innerHTML = '<button class="btn btn-primary">repertoar</button>';
+			cell6.innerHTML = '<button class="btn btn-primary" onclick="prikaziRepertoarPozorista()">repertoar</button>';
 			
 			var starPercentage = (response.content[counter].rejting / starTotal) * 100;
 			if(starPercentage < 10){
@@ -86,7 +86,7 @@ function dobaviBioskope() {
 			cell3.innerHTML = adresaTemp.ulica+" "+adresaTemp.broj+" "+adresaTemp.grad+" "+adresaTemp.zip;
 			cell4.innerHTML = "udaljenost";
 			
-			cell6.innerHTML = '<button class="btn btn-primary">repertoar</button>';
+			cell6.innerHTML = '<button class="btn btn-primary" onclick="prikaziRepertoarBioskopi()">repertoar</button>';
 			
 			var starPercentage = (response.content[counter].rejting / starTotal) * 100;
 			if(starPercentage < 10){
@@ -125,6 +125,318 @@ function dobaviBioskope() {
      getMapLocation();
 }
 
+var prethodnaStranica;
+var trenutnaStranaRezultati;
+var ukupanBrojStrana;
+
+function prikaziRepertoarBioskopi(){
+	$("#bioskopi_prikaz").hide();
+	$("#map").hide();
+	var bioskopIme = $(event.target).parent().siblings().first().next().text();
+	bioskopIme = bioskopIme.split(" ").join("%20");
+	$("#repertoarPrikaz").load("repertoarBioskopi.html", function() {
+		$("#nazPoBi").text(bioskopIme.split("%20").join(" "));
+		$.get('http://localhost:8080/'+bioskopIme+'/filmovi/0', function (data) {
+			trenutnaStranaRezultati = 0;
+			var response = data;
+			var numOfElems = response.numberOfElements;
+			
+			if(numOfElems < 4){
+				var numOfElemsCounter = 1;
+				while(numOfElemsCounter <= 4){
+					if(numOfElemsCounter > numOfElems){
+						$('#rep'+numOfElemsCounter).hide();
+					}
+					numOfElemsCounter++;
+				}
+			}
+			var counter = 1;
+			var contentCounter = 0;
+			while(counter <= numOfElems){
+				$("#rep"+counter+"-h").text(response.content[contentCounter].naizv);
+				$("#rep"+counter+"-zanr").text(response.content[contentCounter].zanr);
+				$("#rep"+counter+"-reditelj").text(response.content[contentCounter].imeReditelja);
+				$("#rep"+counter+"-trajanje").text(response.content[contentCounter].trajanje);
+				var glumci = response.content[contentCounter].spisakGlumaca;
+				var glumciText="";
+				glumci.forEach(function(element) {
+					  glumciText = glumciText+element+" ";
+					});
+				$("#rep"+counter+"-glumci").text(glumciText);
+				$("#rep"+counter+"-opis").text(response.content[contentCounter].opis);
+				var ocene = response.content[contentCounter].ocene;
+				var oceneSuma=0;
+				ocene.forEach(function(element) {
+					oceneSuma = oceneSuma+element;
+					});
+				oceneSuma = oceneSuma/ocene.length;
+				oceneSuma = Math.round(oceneSuma * 100) / 100;
+				$("#rep"+counter+"-ocena").text(oceneSuma);
+				$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+				counter++;
+				contentCounter++;
+				/*var blobJSN = response.content[0].slika;
+				var a = new FileReader();
+				var blob = b64toBlob(response.content[0].naizv);
+				var blobUrl = URL.createObjectURL(blob);
+				$("#rep1-img").attr('src', blobUrl);*/
+			}
+			var numOfPages = response.totalPages;
+			ukupanBrojStrana = response.totalPages;
+			var pageCounter = 1;
+			while(pageCounter < numOfPages){
+				pageCounter++
+				$("#sledeca").before('<li class="page-item"><a class="page-link" href="#" onclick="stranicaRezultati('+pageCounter.toString()+')">'+pageCounter+'</a></li>');
+			}
+		})
+	});
+	$("#repertoarPrikaz").show();
+	prethodnaStranica = "bioskopi";
+}
+
+var prethodnaStranicaPozorista;
+var trenutnaStranaRezultatiPozorista;
+var ukupanBrojStranaPozorista;
+
+function prikaziRepertoarPozorista(){
+	$("#pozorista_prikaz").hide();
+	$("#map").hide();
+	var pozoristeIme = $(event.target).parent().siblings().first().next().text();
+	pozoristeIme = pozoristeIme.split(" ").join("%20");
+	$("#repertoarPrikaz").load("repertoarPozorista.html", function() {
+		$("#nazPoPo").text(pozoristeIme.split("%20").join(" "));
+		$.get('http://localhost:8080/'+pozoristeIme+'/predstave/0', function (data) {
+			trenutnaStranaRezultatiPozorista = 0;
+			var response = data;
+			var numOfElems = response.numberOfElements;
+			
+			if(numOfElems < 4){
+				var numOfElemsCounter = 1;
+				while(numOfElemsCounter <= 4){
+					if(numOfElemsCounter > numOfElems){
+						$('#rep'+numOfElemsCounter).hide();
+					}
+					numOfElemsCounter++;
+				}
+			}
+			var counter = 1;
+			var contentCounter = 0;
+			while(counter <= numOfElems){
+				$("#rep"+counter+"-h").text(response.content[contentCounter].naizv);
+				$("#rep"+counter+"-zanr").text(response.content[contentCounter].zanr);
+				$("#rep"+counter+"-reditelj").text(response.content[contentCounter].imeReditelja);
+				$("#rep"+counter+"-trajanje").text(response.content[contentCounter].trajanje);
+				var glumci = response.content[contentCounter].spisakGlumaca;
+				var glumciText="";
+				glumci.forEach(function(element) {
+					  glumciText = glumciText+element+" ";
+					});
+				$("#rep"+counter+"-glumci").text(glumciText);
+				$("#rep"+counter+"-opis").text(response.content[contentCounter].opis);
+				var ocene = response.content[contentCounter].ocene;
+				var oceneSuma=0;
+				ocene.forEach(function(element) {
+					oceneSuma = oceneSuma+element;
+					});
+				oceneSuma = oceneSuma/ocene.length;
+				oceneSuma = Math.round(oceneSuma * 100) / 100;
+				$("#rep"+counter+"-ocena").text(oceneSuma);
+				$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+				counter++;
+				contentCounter++;
+				/*var blobJSN = response.content[0].slika;
+				var a = new FileReader();
+				var blob = b64toBlob(response.content[0].naizv);
+				var blobUrl = URL.createObjectURL(blob);
+				$("#rep1-img").attr('src', blobUrl);*/
+			}
+			var numOfPages = response.totalPages;
+			ukupanBrojStrana = response.totalPages;
+			var pageCounter = 1;
+			while(pageCounter < numOfPages){
+				pageCounter++
+				$("#sledeca").before('<li class="page-item"><a class="page-link" href="#" onclick="stranicaRezultati('+pageCounter.toString()+')">'+pageCounter+'</a></li>');
+			}
+		})
+	});
+	$("#repertoarPrikaz").show();
+	prethodnaStranicaPozorista = "pozorista";
+}
+
+function b64toBlob(b64Data, contentType, sliceSize) {
+	  contentType = contentType || '';
+	  sliceSize = sliceSize || 128;
+
+	  var byteCharacters = atob(b64Data);
+	  var byteArrays = [];
+
+	  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
+	    var slice = byteCharacters.slice(offset, offset + sliceSize);
+
+	    var byteNumbers = new Array(slice.length);
+	    for (var i = 0; i < slice.length; i++) {
+	      byteNumbers[i] = slice.charCodeAt(i);
+	    }
+
+	    var byteArray = new Uint8Array(byteNumbers);
+
+	    byteArrays.push(byteArray);
+	  }
+
+	  var blob = new Blob(byteArrays, {type: contentType});
+	  return blob;
+}
+
+function stranicaRezultati(page){
+	var stranica;
+	if(trenutnaStranaRezultati == 0 && page == 'prethodna'){
+		stranica = '0';
+	}
+	else if(trenutnaStranaRezultati == ukupanBrojStrana && page == 'sledeca'){
+		var poslednjaStrana = ukupanBrojStrana - 1;
+		stranica = poslednjaStrana.toString();
+	}
+	else if(page == 'prethodna' && trenutnaStranaRezultati > 0){
+		trenutnaStranaRezultati--;
+		stranica = trenutnaStranaRezultati;
+	}
+	else if(page == 'sledeca' && trenutnaStranaRezultati < ukupanBrojStrana){
+		trenutnaStranaRezultati++;
+		stranica = trenutnaStranaRezultati;
+	}
+	else{
+		var stranicaNaKojuIdemo = parseInt(page) - 1;
+		stranica = stranicaNaKojuIdemo.toString();
+	}
+	var bioskopIme = $('#nazPoBi').text();
+	bioskopIme = bioskopIme.split(" ").join("%20");
+	
+	var i;
+	for (i = 1; i < 5; i++) { 
+		$('#rep'+i).show();
+	}
+	
+	$.get('http://localhost:8080/'+bioskopIme+'/filmovi/'+stranica, function (data) {
+		var response = data;
+		var numOfElems = response.numberOfElements;
+		if(numOfElems < 4){
+			var numOfElemsCounter = 1;
+			while(numOfElemsCounter <= 4){
+				if(numOfElemsCounter > numOfElems){
+					$('#rep'+numOfElemsCounter).hide();
+				}
+				numOfElemsCounter++;
+			}
+		}
+		var counter = 1;
+		var contentCounter = 0;
+		while(counter <= numOfElems){
+			$("#rep"+counter+"-h").text(response.content[contentCounter].naizv);
+			$("#rep"+counter+"-zanr").text(response.content[contentCounter].zanr);
+			$("#rep"+counter+"-reditelj").text(response.content[contentCounter].imeReditelja);
+			$("#rep"+counter+"-trajanje").text(response.content[contentCounter].trajanje);
+			var glumci = response.content[contentCounter].spisakGlumaca;
+			var glumciText="";
+			glumci.forEach(function(element) {
+				  glumciText = glumciText+element+" ";
+				});
+			$("#rep"+counter+"-glumci").text(glumciText);
+			$("#rep"+counter+"-opis").text(response.content[contentCounter].opis);
+			var ocene = response.content[contentCounter].ocene;
+			var oceneSuma=0;
+			ocene.forEach(function(element) {
+				oceneSuma = oceneSuma+element;
+				});
+			oceneSuma = oceneSuma/ocene.length;
+			oceneSuma = Math.round(oceneSuma * 100) / 100;
+			$("#rep"+counter+"-ocena").text(oceneSuma);
+			$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+			counter++;
+			contentCounter++;
+			/*var blobJSN = response.content[0].slika;
+			var a = new FileReader();
+			var blob = b64toBlob(response.content[0].naizv);
+			var blobUrl = URL.createObjectURL(blob);
+			$("#rep1-img").attr('src', blobUrl);*/
+		}
+	})
+}
+
+function stranicaRezultatiPozorista(page){
+	var stranica;
+	if(trenutnaStranaRezultatiPozorista == 0 && page == 'prethodna'){
+		stranica = '0';
+	}
+	else if(trenutnaStranaRezultatiPozorista == ukupanBrojStranaPozorista && page == 'sledeca'){
+		var poslednjaStrana = ukupanBrojStranaPozorista - 1;
+		stranica = poslednjaStrana.toString();
+	}
+	else if(page == 'prethodna' && trenutnaStranaRezultatiPozorista > 0){
+		trenutnaStranaRezultatiPozorista--;
+		stranica = trenutnaStranaRezultatiPozorista;
+	}
+	else if(page == 'sledeca' && trenutnaStranaRezultatiPozorista < ukupanBrojStranaPozorista){
+		trenutnaStranaRezultatiPozorista++;
+		stranica = trenutnaStranaRezultatiPozorista;
+	}
+	else{
+		var stranicaNaKojuIdemo = parseInt(page) - 1;
+		stranica = stranicaNaKojuIdemo.toString();
+	}
+	var pozoristeIme = $('#nazPoPo').text();
+	pozoristeIme = pozoristeIme.split(" ").join("%20");
+	
+	var i;
+	for (i = 1; i < 5; i++) { 
+		$('#rep'+i).show();
+	}
+	
+	$.get('http://localhost:8080/'+pozoristeIme+'/predstave/'+stranica, function (data) {
+		var response = data;
+		var numOfElems = response.numberOfElements;
+		if(numOfElems < 4){
+			var numOfElemsCounter = 1;
+			while(numOfElemsCounter <= 4){
+				if(numOfElemsCounter > numOfElems){
+					$('#rep'+numOfElemsCounter).hide();
+				}
+				numOfElemsCounter++;
+			}
+		}
+		var counter = 1;
+		var contentCounter = 0;
+		while(counter <= numOfElems){
+			$("#rep"+counter+"-h").text(response.content[contentCounter].naizv);
+			$("#rep"+counter+"-zanr").text(response.content[contentCounter].zanr);
+			$("#rep"+counter+"-reditelj").text(response.content[contentCounter].imeReditelja);
+			$("#rep"+counter+"-trajanje").text(response.content[contentCounter].trajanje);
+			var glumci = response.content[contentCounter].spisakGlumaca;
+			var glumciText="";
+			glumci.forEach(function(element) {
+				  glumciText = glumciText+element+" ";
+				});
+			$("#rep"+counter+"-glumci").text(glumciText);
+			$("#rep"+counter+"-opis").text(response.content[contentCounter].opis);
+			var ocene = response.content[contentCounter].ocene;
+			var oceneSuma=0;
+			ocene.forEach(function(element) {
+				oceneSuma = oceneSuma+element;
+				});
+			oceneSuma = oceneSuma/ocene.length;
+			oceneSuma = Math.round(oceneSuma * 100) / 100;
+			$("#rep"+counter+"-ocena").text(oceneSuma);
+			$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+			counter++;
+			contentCounter++;
+			/*var blobJSN = response.content[0].slika;
+			var a = new FileReader();
+			var blob = b64toBlob(response.content[0].naizv);
+			var blobUrl = URL.createObjectURL(blob);
+			$("#rep1-img").attr('src', blobUrl);*/
+		}
+	})
+}
+
 function povratakNaPocetnuPozorista(){
 	$("#pocetna").toggle();
 	$("#pozorista_prikaz").toggle();
@@ -137,6 +449,22 @@ function povratakNaPocetnuBioskopi(){
 	$("#bioskopi_prikaz").toggle();
 	$("#tabela_bioskopi").empty();
 	$("#map").toggle();
+}
+
+function povratakNaPrethodnuRepertoar(){
+	if(prethodnaStranica == "bioskopi"){
+		$("#repertoarPrikaz").toggle();
+		$("#bioskopi_prikaz").toggle();
+		$("#map").toggle();
+	}
+}
+
+function povratakNaPrethodnuRepertoarPozorista(){
+	if(prethodnaStranicaPozorista == "pozorista"){
+		$("#repertoarPrikaz").toggle();
+		$("#pozorista_prikaz").toggle();
+		$("#map").toggle();
+	}
 }
 
 var y = document.getElementById("map");
@@ -194,4 +522,11 @@ function preuzmiAdresu(param){
 			    } 
 		});
 	})
+}
+
+function ucitajAdminPozBio(){
+	$("#pocetna").hide();
+	$("#adminPB").load("pozoristeBioskopAdmin.html");
+	$("#adminPB").show();
+	
 }
