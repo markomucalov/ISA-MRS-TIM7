@@ -24,14 +24,14 @@ public class Bioskop implements Serializable{
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@Column(nullable = false)
-    private String naziv;
+	private String naziv;
 
 	@Column(nullable = false)
-    private Integer rejting;
+	private Integer rejting;
 
 	@OneToOne(optional = false)
     private Adresa adresa;
@@ -46,7 +46,14 @@ public class Bioskop implements Serializable{
 	public Bioskop() {
 		
 	}
-
+	
+	public Bioskop(String naziv, Integer rejting, Adresa adresa) {
+		super();
+		this.naziv = naziv;
+		this.rejting = rejting;
+		this.adresa = adresa;
+	}
+	
 	public Long getId() {
 		return id;
 	}
@@ -54,7 +61,7 @@ public class Bioskop implements Serializable{
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getNaziv() {
 		return naziv;
 	}

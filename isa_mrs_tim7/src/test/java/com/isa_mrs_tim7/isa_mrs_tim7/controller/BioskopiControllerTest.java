@@ -17,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import java.nio.charset.Charset;
 
 import javax.annotation.PostConstruct;
+import javax.transaction.Transactional;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -27,7 +28,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import com.isa_mrs_tim7.isa_mrs_tim7.TestUtil;
@@ -36,10 +36,11 @@ import com.isa_mrs_tim7.isa_mrs_tim7.domain.Adresa;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest
+@SpringBootTest 
 public class BioskopiControllerTest {
 	
 	private static final String URL_PREFIX = "/bioskopi";
+	private static final String URL_DODAVANJE = "/kreiranjeBioskopa";
 	
 	private MediaType contentType = new MediaType(MediaType.APPLICATION_JSON.getType(),
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
@@ -103,6 +104,25 @@ public class BioskopiControllerTest {
 
 		String json = TestUtil.json(bioskop);
 		this.mockMvc.perform(post("/Takvud Cineplexx/izmenaPodataka").contentType(contentType).content(json)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testDodavanjeBioskopa() throws Exception {
+		Bioskop bioskop = new Bioskop();
+		bioskop.setNaziv(BioskopConstants.DB_NAZIV_INSERT);
+		bioskop.setRejting(BioskopConstants.DB_REJTING_INSERT);
+		Adresa adresa = new Adresa();
+		adresa.setBroj(BioskopConstants.DB_ADRESA_BROJ_INSERT);
+		adresa.setGrad(BioskopConstants.DB_ADRESA_GRAD_INSERT);
+		adresa.setUlica(BioskopConstants.DB_ADRESA_ULICA_INSERT);
+		adresa.setZip(BioskopConstants.DB_ADRESA_ZIP_INSERT);
+		bioskop.setAdresa(adresa);
+
+		String json = TestUtil.json(bioskop);
+		this.mockMvc.perform(post(URL_DODAVANJE).contentType(contentType).content(json))
+				.andExpect(status().isOk());
 	}
 
 }

@@ -7,9 +7,13 @@ import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
 
 public interface BioskopService {
-	
+
 	Page<Bioskop> getAllBioskopi(Pageable pageable);
 	Bioskop findByNaziv(String naziv);
 	Page<Film> getFilmovi(Bioskop bioskop, Pageable pageable);
 	Bioskop save(Bioskop bioskop);
+
+	Bioskop unesiBioskop(Bioskop bioskop);
+
+	void obrisiBioskop(Bioskop bioskop);
 }

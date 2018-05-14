@@ -467,6 +467,12 @@ function povratakNaPrethodnuRepertoarPozorista(){
 	}
 }
 
+function prikazLoginStranice(){
+	$("#pocetna").hide();
+	$("#login").load("login.html");
+	$("#login").show();
+}
+
 var y = document.getElementById("map");
 var mapLatitude;
 var mapLongitude;

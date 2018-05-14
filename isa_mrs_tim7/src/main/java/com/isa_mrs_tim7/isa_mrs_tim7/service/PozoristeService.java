@@ -7,9 +7,11 @@ import com.isa_mrs_tim7.isa_mrs_tim7.domain.Pozoriste;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Predstava;
 
 public interface PozoristeService {
-	
+
 	Page<Pozoriste> getAllPozorista(Pageable pageable);
 	Pozoriste findByNaziv(String naziv);
 	Page<Predstava> getPredstave(Pozoriste pozoriste, Pageable pageable);
 	Pozoriste save(Pozoriste pozoriste);
+	Pozoriste unesiPozoriste(Pozoriste pozoriste);
+	void obrisiPozoriste(Pozoriste pozoriste);
 }

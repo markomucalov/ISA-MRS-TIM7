@@ -15,33 +15,27 @@ import javax.persistence.Table;
 
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
-
 
 @Entity
 @Table(name = "pozoriste")
 @EntityListeners(AuditingEntityListener.class)
-@JsonIgnoreProperties(value = {"createdAt", "updatedAt"}, allowGetters = true)
 public class Pozoriste implements Serializable {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 
 	@Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
 	@Column(nullable = false)
-    private String naziv;
+	private String naziv;
 
 	@Column(nullable = false)
-    private Integer rejting;
+	private Integer rejting;
 
 	@OneToOne(optional = false)
-    private Adresa adresa;
+	private Adresa adresa;
 
 	@OneToMany(mappedBy="pozoriste")
 	@JsonManagedReference
@@ -51,9 +45,16 @@ public class Pozoriste implements Serializable {
 	private String promotivniOpis;
     
     public Pozoriste() {
-		
+    	
+    }
+    
+    public Pozoriste(String naziv, Integer rejting, Adresa adresa) {
+		super();
+		this.naziv = naziv;
+		this.rejting = rejting;
+		this.adresa = adresa;
 	}
-
+    
 	public Long getId() {
 		return id;
 	}
@@ -61,11 +62,11 @@ public class Pozoriste implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	
 	public String getNaziv() {
 		return naziv;
 	}
-
+	
 	public void setNaziv(String naziv) {
 		this.naziv = naziv;
 	}
@@ -73,7 +74,7 @@ public class Pozoriste implements Serializable {
 	public Integer getRejting() {
 		return rejting;
 	}
-
+	
 	public void setRejting(Integer rejting) {
 		this.rejting = rejting;
 	}
@@ -81,7 +82,7 @@ public class Pozoriste implements Serializable {
 	public Adresa getAdresa() {
 		return adresa;
 	}
-
+	
 	public void setAdresa(Adresa adresa) {
 		this.adresa = adresa;
 	}

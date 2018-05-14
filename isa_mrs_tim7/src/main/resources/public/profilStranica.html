@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
+<link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+<script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+    
+ </head> 
+<body>
+
+<div class="container">
+  
+        <div class="column">
+
+            
+            
+                <ul class="nav nav-tabs" >
+                    <li class="active"><a data-toggle="tab" href="#profile"><i class="glyphicon glyphicon-user"></i> Profil</a></li>
+                    <li><a  data-toggle="tab" href="#menu1" ><i class="glyphicon glyphicon-cog"></i> Izmeni podatke</a></li>
+                    <li><a data-toggle="tab" href="" ><i class="glyphicon glyphicon-plus"></i> Dodaj prijatelje</a></li>
+                    <li><a data-toggle="tab" href="" ><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                </ul>
+            
+            </div>
+            
+            
+            <div class="tab-content" >
+            
+            <div id="profile" class="tab-pane fade in active">
+                <div class="panel panel-info" style="margin: 1em;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Name</h3>
+                    </div>
+                    <div class="panel-body" id="ime">
+                        
+                    </div>
+                </div>
+                
+                <div class="panel panel-info" style="margin: 1em;">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">Email</h3>
+                    </div>
+                    <div class="panel-body" id="email">
+                        
+                    </div>
+                </div>
+                </div>
+                
+                <div id="menu1" class="tab-pane fade">
+                 <form action="/password" method="post">
+
+           
+                    <div class="panel panel-info" style="margin: 1em;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><label for="promenaIme" class="control-label panel-title">Unesi ime</label></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="password" id="promenaIme" >
+                                </div>
+                            </div>
+
+                        </div>
+                 </div>
+                 <div class="panel panel-info" style="margin: 1em;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><label for="promenaPrezime" class="control-label panel-title">Unesi prezime</label></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="unesiPrezime" id="promenaPrezime" >
+                                </div>
+                            </div>
+
+                        </div>
+                 </div>
+                 
+                 
+                 
+                 
+                 <div class="panel panel-info border" style="margin: 1em;">
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="pull-right">
+                                    <input type="submit" class="form-control btn btn-primary" name="submit" id="submit">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 
+                 </form>
+                 </div>
+                </div>
+                </div>
+
+<script src="profilStranica.js"></script>
+</body>
+
+</html>

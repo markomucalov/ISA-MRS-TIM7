@@ -45,40 +45,45 @@ public class Adresa implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
-	public static long getSerialversionuid() {
-		return serialVersionUID;
-	}
-
-	public void setUlica(String ulica) {
-		this.ulica = ulica;
-	}
-
-	public void setBroj(String broj) {
-		this.broj = broj;
-	}
-
-	public void setGrad(String grad) {
-		this.grad = grad;
-	}
-
-	public void setZip(Integer zip) {
-		this.zip = zip;
-	}
-
+	
 	public String getUlica() {
 		return ulica;
 	}
-
+	
+	public void setUlica(String ulica) {
+		this.ulica = ulica;
+	}
+	
 	public String getBroj() {
 		return broj;
+	}
+	
+	public void setBroj(String broj) {
+		this.broj = broj;
 	}
 
 	public String getGrad() {
 		return grad;
 	}
+	
+	public void setGrad(String grad) {
+		this.grad = grad;
+	}
 
 	public Integer getZip() {
 		return zip;
+	}
+	
+	public void setZip(Integer zip) {
+		this.zip = zip;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+	
+	@Override
+	public String toString() {
+		return "Adresa [id=" + id + ", ulica=" + ulica + ", broj=" + broj + ", grad=" + grad + ", zip=" + zip + "]";
 	}
 }
