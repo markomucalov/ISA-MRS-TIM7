@@ -11,11 +11,11 @@
 <body>
 	<div id="profilAdminaPB">
 		<ul class="nav nav-pills nav-justified">
-  			<li class="active"><a data-toggle="pill" href="#pozoriste-bioskop" onclick="postaviPodatkeNaFormu('Takvud%20Cineplexx')">Profil pozorista</a></li>
+  			<li class="active"><a data-toggle="pill" href="#pozoriste-bioskop">Profil pozorista</a></li>
   			<li><a data-toggle="pill" href="#repertoar">Repertoar</a></li>
   			<li><a data-toggle="pill" href="#konfiguracija">Konfuguracija sala</a></li>
   			<li><a data-toggle="pill" href="#statistika">Izvestaj - statistika</a></li>
-  			<li><a data-toggle="pill" href="#licni-podaci">Licni podaci</a></li>
+  			<li><a data-toggle="pill" href="#licni-podaci" onclick="postaviPodatkeAdminaNaFormu('peraperic')">Licni podaci</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -68,7 +68,7 @@
   					</div>
   					<div class="form-group"> 
     					<div class="col-sm-offset-2 col-sm-10">
-      						<button type="submit" class="btn btn-default" onclick="check_form('Takvud%20Cineplexx')">Izmeni podatke</button>
+      						<button type="submit" class="btn btn-default" onclick="check_form()">Izmeni podatke</button>
     					</div>
   					</div>
 				</form>
@@ -83,7 +83,71 @@
     			<h3>U IZRADI</h3>
   			</div>
   			<div id="licni-podaci" class="tab-pane fade">
-    			<h3>U IZRADI</h3>
+    			<form class="form-horizontal" id="izmenaLicPod" action="#" style="margin-top:50px">
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="ime">Ime:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="ime" placeholder="Ime" onblur="check_ime_prezime()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_imena" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="prezime">Prezime:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="prezime" placeholder="Prezime" onblur="check_ime_prezime()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_prezimena" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="korisnickoIme">Korisnicko ime:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="korisnickoIme" placeholder="Korisnicko ime" onblur="check_if_empty_korIme()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_korImena" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="eMailAdresa">E-mail adresa:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="eMailAdresa" placeholder="e-mail" onblur="check_email()" title="dozvoljeni karkteri: a-z A-Z 0-9 . - _(napomena: brojevi, . - samo pre domena, _ pre @)">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_emaila" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+  						<label class ="col-sm-2"></label>
+      					<label class="col-sm-10"><input id="omoguciPromenuLozinke" type="checkbox" value="" onclick="omoguciPromLoz()">Izmena lozinke</label>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="lozinka">Lozinka:</label>
+    					<div class="col-sm-6">
+      						<input type="password" class="form-control" id="lozinka" disabled onblur="check_lozinka_change()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_lozinke" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="potvrdaLozinke">Potvrda lozinke:</label>
+    					<div class="col-sm-6">
+      						<input type="password" class="form-control" id="potvrdaLozinke" disabled onblur="check_lozinka_change()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_potvrdeLozinke" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group"> 
+    					<div class="col-sm-offset-2 col-sm-10">
+      						<button type="submit" class="btn btn-default" onclick="check_form_adminPB()">Izmeni podatke</button>
+    					</div>
+  					</div>
+				</form>
   			</div>
 		</div>
 	</div>			

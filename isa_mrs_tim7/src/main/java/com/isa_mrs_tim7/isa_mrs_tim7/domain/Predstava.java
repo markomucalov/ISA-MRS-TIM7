@@ -45,7 +45,7 @@ public class Predstava implements Serializable{
 	private Time trajanje;
 	
 	@Column(nullable = false)
-	private byte[] slika;
+	private String slika;
 	
 	@Column(nullable = false)
 	private String opis;
@@ -113,11 +113,11 @@ public class Predstava implements Serializable{
 		this.trajanje = trajanje;
 	}
 
-	public byte[] getSlika() {
+	public String getSlika() {
 		return slika;
 	}
 
-	public void setSlika(byte[] slika) {
+	public void setSlika(String slika) {
 		this.slika = slika;
 	}
 

@@ -173,13 +173,9 @@ function prikaziRepertoarBioskopi(){
 				oceneSuma = Math.round(oceneSuma * 100) / 100;
 				$("#rep"+counter+"-ocena").text(oceneSuma);
 				$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+				$("#rep"+counter+"-img").attr('src', response.content[contentCounter].slika);
 				counter++;
 				contentCounter++;
-				/*var blobJSN = response.content[0].slika;
-				var a = new FileReader();
-				var blob = b64toBlob(response.content[0].naizv);
-				var blobUrl = URL.createObjectURL(blob);
-				$("#rep1-img").attr('src', blobUrl);*/
 			}
 			var numOfPages = response.totalPages;
 			ukupanBrojStrana = response.totalPages;
@@ -242,13 +238,9 @@ function prikaziRepertoarPozorista(){
 				oceneSuma = Math.round(oceneSuma * 100) / 100;
 				$("#rep"+counter+"-ocena").text(oceneSuma);
 				$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+				$("#rep"+counter+"-img").attr('src', response.content[contentCounter].slika);
 				counter++;
 				contentCounter++;
-				/*var blobJSN = response.content[0].slika;
-				var a = new FileReader();
-				var blob = b64toBlob(response.content[0].naizv);
-				var blobUrl = URL.createObjectURL(blob);
-				$("#rep1-img").attr('src', blobUrl);*/
 			}
 			var numOfPages = response.totalPages;
 			ukupanBrojStrana = response.totalPages;
@@ -292,7 +284,7 @@ function stranicaRezultati(page){
 	if(trenutnaStranaRezultati == 0 && page == 'prethodna'){
 		stranica = '0';
 	}
-	else if(trenutnaStranaRezultati == ukupanBrojStrana && page == 'sledeca'){
+	else if(trenutnaStranaRezultati == ukupanBrojStrana && ukupanBrojStrana != 0 && page == 'sledeca'){
 		var poslednjaStrana = ukupanBrojStrana - 1;
 		stranica = poslednjaStrana.toString();
 	}
@@ -304,9 +296,15 @@ function stranicaRezultati(page){
 		trenutnaStranaRezultati++;
 		stranica = trenutnaStranaRezultati;
 	}
-	else{
+	else if(page !='prethodna' && page != 'sledeca'){
 		var stranicaNaKojuIdemo = parseInt(page) - 1;
+		if(stranicaNaKojuIdemo < 0){
+			stranicaNaKojuIdemo = 0;
+		}
 		stranica = stranicaNaKojuIdemo.toString();
+	}
+	else{
+		stranica = 0;
 	}
 	var bioskopIme = $('#nazPoBi').text();
 	bioskopIme = bioskopIme.split(" ").join("%20");
@@ -351,13 +349,9 @@ function stranicaRezultati(page){
 			oceneSuma = Math.round(oceneSuma * 100) / 100;
 			$("#rep"+counter+"-ocena").text(oceneSuma);
 			$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+			$("#rep"+counter+"-img").attr('src', response.content[contentCounter].slika);
 			counter++;
 			contentCounter++;
-			/*var blobJSN = response.content[0].slika;
-			var a = new FileReader();
-			var blob = b64toBlob(response.content[0].naizv);
-			var blobUrl = URL.createObjectURL(blob);
-			$("#rep1-img").attr('src', blobUrl);*/
 		}
 	})
 }
@@ -367,7 +361,7 @@ function stranicaRezultatiPozorista(page){
 	if(trenutnaStranaRezultatiPozorista == 0 && page == 'prethodna'){
 		stranica = '0';
 	}
-	else if(trenutnaStranaRezultatiPozorista == ukupanBrojStranaPozorista && page == 'sledeca'){
+	else if(trenutnaStranaRezultatiPozorista == ukupanBrojStranaPozorista && ukupanBrojStranaPozorista != 0 && page == 'sledeca'){
 		var poslednjaStrana = ukupanBrojStranaPozorista - 1;
 		stranica = poslednjaStrana.toString();
 	}
@@ -379,9 +373,15 @@ function stranicaRezultatiPozorista(page){
 		trenutnaStranaRezultatiPozorista++;
 		stranica = trenutnaStranaRezultatiPozorista;
 	}
-	else{
+	else if(page !='prethodna' && page != 'sledeca'){
 		var stranicaNaKojuIdemo = parseInt(page) - 1;
+		if(stranicaNaKojuIdemo < 0){
+			stranicaNaKojuIdemo = 0;
+		}
 		stranica = stranicaNaKojuIdemo.toString();
+	}
+	else{
+		stranica = 0;
 	}
 	var pozoristeIme = $('#nazPoPo').text();
 	pozoristeIme = pozoristeIme.split(" ").join("%20");
@@ -426,13 +426,9 @@ function stranicaRezultatiPozorista(page){
 			oceneSuma = Math.round(oceneSuma * 100) / 100;
 			$("#rep"+counter+"-ocena").text(oceneSuma);
 			$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
+			$("#rep"+counter+"-img").attr('src', response.content[contentCounter].slika);
 			counter++;
 			contentCounter++;
-			/*var blobJSN = response.content[0].slika;
-			var a = new FileReader();
-			var blob = b64toBlob(response.content[0].naizv);
-			var blobUrl = URL.createObjectURL(blob);
-			$("#rep1-img").attr('src', blobUrl);*/
 		}
 	})
 }
