@@ -65,6 +65,4 @@ public class BioskopServiceImpl implements BioskopService {
 	public void obrisiBioskop(Bioskop bioskop) {
 		//this.bioskopRep.delete(bioskop);		
 	}
-
-//>>>>>>> refs/remotes/origin/master
 }
