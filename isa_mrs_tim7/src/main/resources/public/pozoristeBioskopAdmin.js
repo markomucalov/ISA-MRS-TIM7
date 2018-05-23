@@ -8,6 +8,7 @@ var error_korIme = false;
 var error_lozinka = false;
 var error_potvrdaLozinke = false;
 
+var korisIme = "";
 
 
 function check_broj() {
@@ -54,7 +55,7 @@ function check_form_adminPB() {
 	check_lozinka_change();
 		
 	if(error_ime == false && error_prezime == false && error_email == false && error_korIme == false && error_lozinka == false && error_potvrdaLozinke == false) {
-		izmeniPodatkeAdminaPB(korIme);
+		izmeniPodatkeAdminaPB(korisIme);
 		return true;
 	} else {
 		return false;	
@@ -121,7 +122,7 @@ function izmeniPodatke(nazivBioskopa){
 	});
 }
 
-function izmeniPodatkeAdminaPB(korIme){
+function izmeniPodatkeAdminaPB(korisnickoIme){
 	var ime = $("#ime").val();
 	var prezime = $("#prezime").val();
 	var korIme = $("#korisnickoIme").val();
@@ -135,7 +136,7 @@ function izmeniPodatkeAdminaPB(korIme){
 		    "lozinka": lozinka 
 		}
 	$.ajax({
-	    url: 'http://localhost:8080/'+korIme+'/izmenaPodatakaAdminaPB',
+	    url: 'http://localhost:8080/'+korisnickoIme+'/izmenaPodatakaAdminaPB',
 	    type: 'POST',
 	    /*data: JSON.stringify({ BioskopDTO: bioskopDTO }),*/
 	    data: JSON.stringify(adminDTO),
@@ -235,16 +236,228 @@ function postaviPodatkeAdminaNaFormu(korImeAdmina){
 		$("#eMailAdresa").val(response.mailAdresa);
 		$("#lozinka").val(response.lozinka);
 		$("#potvrdaLozinke").val(response.lozinka);
+		korisIme = response.korisnickoIme;
 		nazivBioskopa = response.bioskop.naziv;
 		postaviPodatkeNaFormu(nazivBioskopa);
+		ucitajRepertoarBioskopa(nazivBioskopa);
 	})
 }
 
-/*function proveriDaLiMenjaLozinku(){
-	if($("#omoguciPromenuLozinke").checked == true){
+/* funkcije za repertoar*/
+
+function ucitajRepertoarBioskopa(nazivBioskopa){
+	$.get('http://localhost:8080/'+nazivBioskopa+'/allFilmovi', function (data) {
+		var response = data;
+		var tabela = document.getElementById("tabela_filmovi_sadrzaj");
+		$("#tabela_filmovi").find("tr:not(:first)").remove();;
 		
+		for(var counter in response){
+			var row = tabela.insertRow(counter);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			var cell5 = row.insertCell(4);
+			var cell6 = row.insertCell(5);
+			
+			cell1.innerHTML = response[counter].naizv;
+			cell2.innerHTML = response[counter].zanr;
+			cell3.innerHTML = response[counter].imeReditelja;
+			cell4.innerHTML = response[counter].trajanje;
+			cell5.innerHTML = '<button class="btn btn-primary" onclick="prikaziDetaljeFilma()">Detalji/Izmeni</button>';
+			cell6.innerHTML = '<button class="btn btn-primary" onclick="obrisiFilm()">Obrisi</button>';
+		}
+	})
+}
+
+function dodajFilmUTabelu(response){
+	var tabela = document.getElementById("tabela_filmovi_sadrzaj");
+	var row = tabela.insertRow(-1);
+	var cell1 = row.insertCell(0);
+	var cell2 = row.insertCell(1);
+	var cell3 = row.insertCell(2);
+	var cell4 = row.insertCell(3);
+	var cell5 = row.insertCell(4);
+	var cell6 = row.insertCell(5);
+	
+	cell1.innerHTML = response.naizv;
+	cell2.innerHTML = response.zanr;
+	cell3.innerHTML = response.imeReditelja;
+	cell4.innerHTML = response.trajanje;
+	cell5.innerHTML = '<button class="btn btn-primary" onclick="prikaziDetaljeFilma()">Detalji/Izmeni</button>';
+	cell6.innerHTML = '<button class="btn btn-primary" onclick="obrisiFilm()">Obrisi</button>';
+}
+
+function prikaziDetaljeFilma(){
+	/*TODO*/
+}
+
+function obrisiFilm(){
+	var nazivBioskopa = $("#naziv").val();
+	var nazivFilma = $(event.target).parent().siblings().first().text();
+	$(event.target).parent().parent().remove();
+	
+	$.ajax({
+	    url: 'http://localhost:8080/'+nazivBioskopa+'/'+nazivFilma+'/obrisiFilm',
+	    type: 'POST',
+	    /*data: JSON.stringify({ BioskopDTO: bioskopDTO }),*/
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    success: function() {
+	        alert('uspesno ste izbrisali film');
+	    }
+	});
+}
+
+function dodajNoviFilm(nazivBioskopa){
+	var naziv = $("#nazivFiPr").val();
+	var zanr = $("#zanrFiPr").val();
+	var reditelj = $("#rediteljFiPr").val();
+	var trajanje = $("#trajanjeFiPr").val();
+	var cena = $("#cenaFiPr").val();
+	var opis = $("#opisFiPr").val();
+	var filmDTO={
+			"naizv": naziv,
+		    "spisakGlumaca": [],
+		    "zanr": zanr,
+		    "imeReditelja": reditelj,
+		    "trajanje": trajanje,
+		    "opis" : opis,
+		    "cena" : cena
+		}
+	var counterGlumci = 0;
+	$("#lista_glumaca li").each(function(){
+		filmDTO.spisakGlumaca[counterGlumci] = $(this).text();
+		counterGlumci ++;
+	 });
+	$("#DodavanjeRepertoara").submit(function (evt) {
+		   evt.preventDefault(); //prevents the default action
+
+	});
+	$.ajax({
+	    url: 'http://localhost:8080/'+nazivBioskopa+'/dodajFilm',
+	    type: 'POST',
+	    /*data: JSON.stringify({ BioskopDTO: bioskopDTO }),*/
+	    data: JSON.stringify(filmDTO),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    success: function(data) {
+	    	var response = data;
+	        dodajFilmUTabelu(response);
+	    }
+	});
+}
+
+function dodavanjeGlumaca(){
+	var newitem = $('#glumac_polje').val();
+	var uniqid = Math.round(new Date().getTime() + (Math.random() * 100));
+	$('#lista_glumaca').append('<li id="'+uniqid+'" class="list-group-item"><input type="button" data-id="'+uniqid+'" class="listelement" value="X" onClick="ukloniGlumca()" /> '+newitem+'<input type="hidden" name="listed[]" value="'+newitem+'"></li>');
+	$('#glumac_polje').val('');
+}
+
+function ukloniGlumca(){
+	$('#lista_glumaca').delegate(".listelement", "click", function() {
+		var elemid = $(this).attr('data-id');
+		$("#"+elemid).remove();
+    });
+}
+
+var error_nazivFiPr = false;
+var error_zanrFiPr = false;
+var error_rediteljFiPr = false;
+var error_trajanjeFiPr = false;
+var error_cenaFiPr = false;
+
+function check_if_empty_naziv(){
+	var korIme = $("#nazivFiPr").val();
+	if($("#nazivFiPr").val() == ""){
+		$(".error_nazivaFiPr").text("Naziv ne sme biti prazan");
+		error_nazivFiPr = true;
 	}
 	else{
-		
+		$(".error_nazivaFiPr").text("");
 	}
-}*/
+}
+
+function check_if_empty_zanr(){
+	var korIme = $("#zanrFiPr").val();
+	if($("#zanrFiPr").val() == ""){
+		$(".error_zanraFiPr").text("Zanr ne sme biti prazan");
+		error_zanrFiPr = true;
+	}
+	else{
+		$(".error_zanraFiPr").text("");
+	}
+}
+
+function check_if_empty_reditelj(){
+	var korIme = $("#rediteljFiPr").val();
+	if($("#rediteljFiPr").val() == ""){
+		$(".error_rediteljaFiPr").text("Reditelj ne sme biti prazan");
+		error_rediteljFiPr = true;
+	}
+	else{
+		$(".error_rediteljaFiPr").text("");
+	}
+}
+
+function check_trajanje() {
+	
+	var pattern = new RegExp(/^([0-1][0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9])$/);
+		
+	if(pattern.test($("#trajanjeFiPr").val())) {
+		$(".error_trajanja").text("");
+	} else {
+		$(".error_trajanja").text("trajanje mora biti oblika: cc:mm:ss");
+		error_trajanjeFiPr = true;
+	}
+	
+}
+
+function check_cena() {
+	
+	var pattern = new RegExp(/^\d+$/);
+		
+	if(pattern.test($("#cenaFiPr").val())) {
+		$(".error_cene").text("");
+	} else {
+		$(".error_cene").text("Cena mora biti broj");
+		error_cenaFiPr = true;
+	}
+	
+}
+
+function check_form_dodaj_film() {
+	
+	var nazivBioskopa = $("#naziv").val();
+											
+	error_nazivFiPr = false;
+	error_zanrFiPr = false;
+	error_rediteljFiPr = false;
+	error_trajanjeFiPr = false;
+	error_cenaFiPr = false;
+	
+	check_if_empty_naziv();
+	check_if_empty_zanr();
+	check_if_empty_reditelj();
+	check_trajanje();
+	check_cena();
+		
+	if(error_nazivFiPr == false && error_zanrFiPr == false && error_rediteljFiPr == false && error_trajanjeFiPr == false && error_cenaFiPr == false) {
+		dodajNoviFilm(nazivBioskopa);
+		$("#nazivFiPr").val("");
+		$("#zanrFiPr").val("");
+		$("#rediteljFiPr").val("");
+		$("#trajanjeFiPr").val("");
+		$("#cenaFiPr").val("");
+		$("#opisFiPr").val("");
+		$("#lista_glumaca").empty();
+		return true;
+	} else {
+		return false;	
+	}
+}
+
+function ucitajRepertoarPozorista(){
+	/*TODO*/
+}

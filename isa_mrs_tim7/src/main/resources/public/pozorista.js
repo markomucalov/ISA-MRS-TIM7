@@ -166,11 +166,16 @@ function prikaziRepertoarBioskopi(){
 				$("#rep"+counter+"-opis").text(response.content[contentCounter].opis);
 				var ocene = response.content[contentCounter].ocene;
 				var oceneSuma=0;
-				ocene.forEach(function(element) {
-					oceneSuma = oceneSuma+element;
-					});
-				oceneSuma = oceneSuma/ocene.length;
-				oceneSuma = Math.round(oceneSuma * 100) / 100;
+				if(ocene.length == 0){
+					oceneSuma = 0;
+				}
+				else{
+					ocene.forEach(function(element) {
+						oceneSuma = oceneSuma+element;
+						});
+					oceneSuma = oceneSuma/ocene.length;
+					oceneSuma = Math.round(oceneSuma * 100) / 100;
+				}
 				$("#rep"+counter+"-ocena").text(oceneSuma);
 				$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
 				$("#rep"+counter+"-img").attr('src', response.content[contentCounter].slika);
@@ -231,11 +236,17 @@ function prikaziRepertoarPozorista(){
 				$("#rep"+counter+"-opis").text(response.content[contentCounter].opis);
 				var ocene = response.content[contentCounter].ocene;
 				var oceneSuma=0;
-				ocene.forEach(function(element) {
-					oceneSuma = oceneSuma+element;
-					});
-				oceneSuma = oceneSuma/ocene.length;
-				oceneSuma = Math.round(oceneSuma * 100) / 100;
+				if(ocene.length == 0){
+					oceneSuma=0;
+				}
+				else{
+					ocene.forEach(function(element) {
+						oceneSuma = oceneSuma+element;
+						});
+					oceneSuma = oceneSuma/ocene.length;
+					oceneSuma = Math.round(oceneSuma * 100) / 100;
+				}
+				
 				$("#rep"+counter+"-ocena").text(oceneSuma);
 				$("#rep"+counter+"-cena").text(response.content[contentCounter].cena);
 				$("#rep"+counter+"-img").attr('src', response.content[contentCounter].slika);

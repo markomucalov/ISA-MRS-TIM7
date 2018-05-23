@@ -1,4 +1,5 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.service;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -39,6 +40,11 @@ public class BioskopServiceImpl implements BioskopService {
 	public Page<Film> getFilmovi(Bioskop bioskop, Pageable pageable) {
 		Assert.notNull(bioskop, "Bioskop ne sme biti null");
 		return filmRep.findByBioskop(bioskop, pageable);
+	}
+	
+	@Override
+	public List<Film> getAllFilmovi(Bioskop bioskop){
+		return filmRep.findFilmoviByBioskop(bioskop);
 	}
 	
 	@Override

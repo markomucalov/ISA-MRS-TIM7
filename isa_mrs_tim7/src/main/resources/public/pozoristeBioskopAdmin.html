@@ -15,7 +15,7 @@
   			<li><a data-toggle="pill" href="#repertoar">Repertoar</a></li>
   			<li><a data-toggle="pill" href="#konfiguracija">Konfuguracija sala</a></li>
   			<li><a data-toggle="pill" href="#statistika">Izvestaj - statistika</a></li>
-  			<li><a data-toggle="pill" href="#licni-podaci" onclick="postaviPodatkeAdminaNaFormu('peraperic')">Licni podaci</a></li>
+  			<li><a data-toggle="pill" href="#licni-podaci" onclick="postaviPodatkeAdminaNaFormu('jovaperic')">Licni podaci</a></li>
 		</ul>
 
 		<div class="tab-content">
@@ -74,7 +74,119 @@
 				</form>
   			</div>
   			<div id="repertoar" class="tab-pane fade">
-    			<h3>U IZRADI</h3>
+  				<div class="scrollable" style="height:200px; overflow-y:scroll">
+					<table class="table table-hover" id="tabela_filmovi">
+						<thead>
+      						<tr>
+        						<th>Naziv</th>
+        						<th>Zanr</th>
+        						<th>Reditelj</th>
+        						<th>Trajanje</th>
+        						<th>Detalji/Izmeni</th>
+        						<th>Obrisi</th>
+      						</tr>
+    					</thead>
+    					<tbody id="tabela_filmovi_sadrzaj">
+      			
+    					</tbody>
+  					</table>
+				</div>
+				<form class="form-horizontal" id="DodavanjeRepertoara" action="#" style="margin-top:50px">
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="nazivFiPr">*Naziv:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="nazivFiPr" placeholder="Naziv" onblur="check_if_empty_naziv()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_nazivaFiPr" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="zanrFiPr">*Zanr:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="zanrFiPr" placeholder="Zanr" onblur="check_if_empty_zanr()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_zanraFiPr" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="rediteljFiPr">*Reditelj:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="rediteljFiPr" placeholder="Reditelj" onblur="check_if_empty_reditelj()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_rediteljaFiPr" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="trajanjeFiPr">*Trajanje:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="trajanjeFiPr" placeholder="cc:mm:ss" onblur="check_trajanje()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_trajanja" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="cenaFiPr">*Cena:</label>
+    					<div class="col-sm-6">
+      						<input type="text" class="form-control" id="cenaFiPr" placeholder="" onblur="check_cena()">
+    					</div>
+    					<div class="col-sm-4">
+    							<label class="error_cene" style="color:red"></label>
+    					</div>
+  					</div>
+  					<div class="form-group"> 
+    					<div class="col-sm-offset-2 col-sm-10">
+      						<button type="button" class="btn btn-default" data-toggle="modal" data-target="#dodavanjeGlumaca">Dodaj glumce</button>
+    					</div>
+  					</div>
+  					<div class="form-group">
+    					<label class="control-label col-sm-2" for="opisFiPr">Opis:</label>
+    					<div class="col-sm-10">
+      						<textarea class="form-control" rows="5" id="opisFiPr"></textarea>
+    					</div>
+  					</div>
+  					<div class="form-group"> 
+    					<div class="col-sm-offset-2 col-sm-10">
+      						<button type="submit" class="btn btn-default" onclick="check_form_dodaj_film()">Dodaj novi</button>
+    					</div>
+  					</div>
+  					<div id="dodavanjeGlumaca" class="modal fade">
+  						<div class="modal-dialog">
+  							<div class="modal-content">
+  								<div class="modal-header">
+  									<h4 class="modal-title">Dodavanje glumaca</h4>
+  								</div>
+  								<div class="modal-body">
+  									<div class="container">
+    									<div class="row">
+        									<div class="col-xs-12 col-sm-8 col-md-6">
+    		    								<div class="row">
+                        							<div class="form-group">
+                            							<label>Novi glumac:</label>
+                            							<input type="text" name="item" id="glumac_polje">
+            		        							<input type="button" id="glumac_dugme" name="glumac_dugme" value="Dodaj" class="btn btn-primary btn-sm" onclick="dodavanjeGlumaca()" />
+            		    							</div>
+    		   									</div>
+                								<div class="form-group">
+                    								<h5>Glumci:</h5>
+                    								<hr>
+                    								<ul id="lista_glumaca" class="list-group">
+                    								</ul>
+                								</div>
+											</div>
+										</div>
+									</div>
+  								</div>
+  								<div class="modal-footer">
+  									<button type="button" class="btn btn-default" data-dismiss="modal">Zavrsi dodavanje</button>
+  								</div>
+  							</div>
+  						</div>
+  					</div>
+				</form>
   			</div>
   			<div id="konfiguracija" class="tab-pane fade">
     			<h3>U IZRADI</h3>
