@@ -4,24 +4,23 @@ import com.isa_mrs_tim7.isa_mrs_tim7.repository.*;
 
 
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import javax.annotation.PostConstruct;
 
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
-import org.springframework.stereotype.Service;
+
 
 
 public interface ServisLogin {
 	
 	RegistrovaniKorisnik getKorisnik(String email1, String lozinka1);
+	RegistrovaniKorisnik update(RegistrovaniKorisnik reg);
+	void sendNotificaitionSync (RegistrovaniKorisnik reg) throws MailException, InterruptedException;
+	RegistrovaniKorisnik provjera (RegistrovaniKorisnik reg);
+	Page<RegistrovaniKorisnik> dodajSve(Pageable page);
+	
 	
 	/*private List<RegistrovaniKorisnik> users;
 	@Autowired

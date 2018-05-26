@@ -1,9 +1,28 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.controller;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
+import javax.validation.Valid;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.mail.MailException;
+
+import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.isa_mrs_tim7.isa_mrs_tim7.entity.AjaxResponseBody;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.RegistrovaniKorisnik;
+import com.isa_mrs_tim7.isa_mrs_tim7.entity.SearchCriteria;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.ServisLogin;
 @RestController
 public class RegistracijaController {
-	/*
+	
 	
 		private Logger logger = LoggerFactory.getLogger(this.getClass());
 		 ServisLogin userService;
@@ -31,8 +50,8 @@ public class RegistracijaController {
 
 		        }
 
-		        List<RegistrovaniKorisnik> users = userService.findByUserName(search.getEmail());
-		        if (users.isEmpty()) {
+		        RegistrovaniKorisnik users = userService.provjera(search);
+		        if (users==null) {
 		            result.setMsg("success");
 		            try {
 		            	userService.sendNotificaitionSync(search);
@@ -53,5 +72,5 @@ public class RegistracijaController {
 
 		    }
 		
-*/
+
 	}

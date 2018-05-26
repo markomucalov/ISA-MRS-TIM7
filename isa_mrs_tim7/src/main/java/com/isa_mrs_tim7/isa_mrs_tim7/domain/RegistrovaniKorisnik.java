@@ -35,10 +35,23 @@ public class RegistrovaniKorisnik implements Serializable {
 		this.lozinka = lozinka;
 	}
 	public RegistrovaniKorisnik() {
-		super();
+		
 	}
 	public String getIme() {
 		return ime;
+	}
+	
+	public Long getId() {
+		return id;
+	}
+	public void setId(Long id) {
+		this.id= id;
+	}
+	
+	@Override
+	public String toString() {
+		return "RegistrovaniKorisnik [id=" + id + ", ime=" + ime + ", prezime=" + prezime + ", email=" + email
+				+ ", lozinka=" + lozinka + "]";
 	}
 	public void setIme(String ime) {
 		this.ime = ime;

@@ -1,5 +1,6 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.controller;
 
+import java.util.List;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -7,8 +8,14 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.Errors;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,13 +23,25 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.isa_mrs_tim7.isa_mrs_tim7.domain.RegistrovaniKorisnik;
+import com.isa_mrs_tim7.isa_mrs_tim7.entity.AjaxResponseBody;
 import com.isa_mrs_tim7.isa_mrs_tim7.entity.LoginPodaci;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Pozoriste;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.RegistrovaniKorisnik;
+import com.isa_mrs_tim7.isa_mrs_tim7.entity.SearchCriteria;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.ServisLogin;
 
+
+
+
+
+
+
+
+
 @RestController
-public class LoginController {
+public class LoginController  {
 	private RegistrovaniKorisnik reg;
+	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
 	 ServisLogin userService;
 
@@ -53,9 +72,39 @@ public class LoginController {
 				method = RequestMethod.GET,
 				produces = MediaType.APPLICATION_JSON_VALUE)
 		@ResponseBody
-		public RegistrovaniKorisnik getAllPozorista() {
+		public RegistrovaniKorisnik getAllKorisnici() {
 		    return reg;
 		}
+	    
+	    
+	    @RequestMapping(value = "/korisnici",
+				method = RequestMethod.GET,
+				produces = MediaType.APPLICATION_JSON_VALUE)
+		@ResponseBody
+		public Page<RegistrovaniKorisnik> getAllUsers() {
+		    return userService.dodajSve(PageRequest.of(0, Integer.MAX_VALUE));
+		}
+	    
+	    @RequestMapping(
+				value = "/login/ulogovani",
+				method = RequestMethod.POST,
+				consumes = MediaType.APPLICATION_JSON_VALUE,
+				produces = MediaType.APPLICATION_JSON_VALUE)
+		public RegistrovaniKorisnik updateKorisnik(
+				@RequestBody RegistrovaniKorisnik korisnik) throws Exception {
+			logger.info("> updateGreeting id:{}", korisnik.getId());
+			System.out.println(korisnik.toString());
+			reg.setIme(korisnik.getIme());
+			reg.setLozinka(korisnik.getLozinka());
+			reg.setPrezime(korisnik.getPrezime());
+			 RegistrovaniKorisnik updatedKorisnik = userService.update(korisnik);
+			if (updatedKorisnik == null) {
+				System.out.println("Nije pronadjen");
+			}
+			logger.info("< updateGreeting id:{}", korisnik.getId());
+			return updatedKorisnik;
+		}
+	    
 	    
 	   /* @PostMapping("/login/provjeri")
 	    public ResponseEntity<?> getSearchResultViaAjax(

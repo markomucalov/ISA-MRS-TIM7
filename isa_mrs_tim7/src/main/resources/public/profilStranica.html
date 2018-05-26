@@ -4,10 +4,16 @@
 <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 <link href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<style type="text/css">
 
+
+</style>
     
  </head> 
 <body>
+
 
 <div class="container">
   
@@ -18,8 +24,9 @@
                 <ul class="nav nav-tabs" >
                     <li class="active"><a data-toggle="tab" href="#profile"><i class="glyphicon glyphicon-user"></i> Profil</a></li>
                     <li><a  data-toggle="tab" href="#menu1" ><i class="glyphicon glyphicon-cog"></i> Izmeni podatke</a></li>
-                    <li><a data-toggle="tab" href="" ><i class="glyphicon glyphicon-plus"></i> Dodaj prijatelje</a></li>
-                    <li><a data-toggle="tab" href="" ><i class="glyphicon glyphicon-log-out"></i> Logout</a></li>
+                    <li><a data-toggle="tab" href="#menu2" ><i class="glyphicon glyphicon-plus"></i> Dodaj prijatelje</a></li>
+     
+                    <li id="prikaziZah"><a data-toggle="tab" href="#menu4" ><i class="glyphicon glyphicon-user"></i> Zahtevi za prijateljstvo</a></li>
                 </ul>
             
             </div>
@@ -30,7 +37,7 @@
             <div id="profile" class="tab-pane fade in active">
                 <div class="panel panel-info" style="margin: 1em;">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Name</h3>
+                        <h3 class="panel-title">Ime i prezime</h3>
                     </div>
                     <div class="panel-body" id="ime">
                         
@@ -78,6 +85,20 @@
                         </div>
                  </div>
                  
+                 <div class="panel panel-info" style="margin: 1em;">
+                        <div class="panel-heading">
+                            <h3 class="panel-title"><label for="promenaLozinka" class="control-label panel-title">Unesi novu lozinku</label></h3>
+                        </div>
+                        <div class="panel-body">
+                            <div class="form-group">
+                                <div class="col-sm-10">
+                                    <input type="text" class="form-control" name="unesiLozinku" id="promenaLozinka" >
+                                </div>
+                            </div>
+
+                        </div>
+                 </div>
+                 
                  
                  
                  
@@ -85,7 +106,7 @@
                         <div class="panel-body">
                             <div class="form-group">
                                 <div class="pull-right">
-                                    <input type="submit" class="form-control btn btn-primary" name="submit" id="submit">
+                                    <input type="submit" class="form-control btn btn-primary" name="submit" id="submit" value="Potvrdi" onclick="promeniPodatke()">
                                 </div>
                             </div>
                         </div>
@@ -93,8 +114,101 @@
                  
                  </form>
                  </div>
+                 <div id="menu2" class="tab-pane fade">
+                 <div class="container">
+                <div class="row"> 
+        <div class="col-xs-8 col-xs-offset-2 ">
+		    <div class="input-group" >
+                <div class="input-group-btn search-panel" id="left" >
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    	<span id="selected">Filter po</span> <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" >
+                      <li><a >Email</a></li>
+                      <li><a >Ime i Prezime</a></li>
+         
+                    </ul>
+                
+                </div>
+                
+                <form dir="ltr" > 
+                <div class="column" >
+                 <div id="center" class="col-xs-8 col-xs-offset-2">   
+                <input list="lista-imena"  name="imena" placeholder="Pretrazi prijatelje..." onfocus="fokusiraj()" >
+                <datalist id="lista-imena">
+                
+                </datalist>
+                </div>
+                <div id="right" class="col-xs-8 col-xs-offset-2">
+                <span class="input-group-btn" >
+                    <button class="btn btn-default" type="button" onclick="pretraga()" ><span class="glyphicon glyphicon-search"></span></button>
+                </span>
                 </div>
                 </div>
+                </form>
+                
+                
+                
+            </div>
+            </div>
+            </div>
+            </div>
+            <div class="scrollable" style="height:200px; overflow-y:scroll">
+				<table class="table table-hover" id="t_pozorista">
+					<thead>
+      					<tr>
+        					<th>#</th>
+        					<th>Ime i Prezime</th>
+        					<th>Email</th>
+        					<th>Dodaj</th>
+        					
+      					</tr>
+    				</thead>
+    				<tbody id="tabela" >
+      			
+    				</tbody>
+  				</table>
+			</div>		
+            </div>
+            
+            
+                 
+                 
+                 
+                 <div id="menu4" class="tab-pane fade">
+                 
+                 <div class="scrollable" style="height:400px; overflow-y:scroll">
+				<table class="table table-hover" id="t_prijateljstva">
+					<thead>
+      					<tr>
+        					<th>#</th>
+        					<th>Email</th>
+        					<th>Dodaj</th>
+        					<th>Obrisi</th>
+        					
+      					</tr>
+    				</thead>
+    				<tbody id="tabela1" >
+      			
+    				</tbody>
+  				</table>
+			</div>		
+                 
+                 
+                
+                 </div>
+                 
+            
+            
+            
+            
+            
+            
+        </div>
+	</div>
+                 
+                 
+               
 
 <script src="profilStranica.js"></script>
 </body>
