@@ -471,6 +471,13 @@ function ucitajRepertoarPozorista(){
 
 function dodajSalu(){
 	var nazivSale = $("#nazivSale").val();
+	if(nazivSale == ""){
+		$(".error_nazivaSale").text("naziv sale ne sme biti prazan");
+		return;
+	}
+	else{
+		$(".error_nazivaSale").text("");
+	}
 	$.ajax({
 		  type: 'POST',
 		  url: 'http://localhost:8080/'+nazivSale+'/'+ulogovaniAdmin+'/dodajSalu',

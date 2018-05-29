@@ -237,7 +237,7 @@ public class AdministratorPozoristaBioskopaController {
 	}
 	
 	@RequestMapping(value = "/{adminKorIme}/{salaNaziv}/izmeniKonfiguraciju", method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<String> updateBioskop(@PathVariable String adminKorIme, @PathVariable String salaNaziv, @RequestBody KonfiguracijaDTO konfiguracijaDTO){
+	public ResponseEntity<String> updateKonfiguracija(@PathVariable String adminKorIme, @PathVariable String salaNaziv, @RequestBody KonfiguracijaDTO konfiguracijaDTO){
 		
 		AdministratorPozoristaBioskopa adminPB = adminPozBioSer.findByKorIme(adminKorIme);
 		

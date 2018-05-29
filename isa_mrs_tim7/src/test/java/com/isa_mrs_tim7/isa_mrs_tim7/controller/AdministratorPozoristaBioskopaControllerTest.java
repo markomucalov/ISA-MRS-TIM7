@@ -1,9 +1,15 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.controller;
 
+import static org.hamcrest.Matchers.hasSize;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 import javax.transaction.Transactional;
@@ -22,6 +28,15 @@ import org.springframework.web.context.WebApplicationContext;
 import com.isa_mrs_tim7.isa_mrs_tim7.TestUtil;
 import com.isa_mrs_tim7.isa_mrs_tim7.constants.AdministratorPozorBiosConstants;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.AdministratorPozoristaBioskopa;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sala;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sediste;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.TipSedista;
+import com.isa_mrs_tim7.isa_mrs_tim7.dto.KonfiguracijaDTO;
+import com.isa_mrs_tim7.isa_mrs_tim7.dto.SedisteDTO;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.BioskopService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.SalaService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.SedisteService;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
@@ -31,6 +46,13 @@ public class AdministratorPozoristaBioskopaControllerTest {
 			MediaType.APPLICATION_JSON.getSubtype(), Charset.forName("utf8"));
 	
 	private MockMvc mockMvc;
+	
+	@Autowired
+	private BioskopService bioskopService;
+	@Autowired
+	private SalaService salaService;
+	@Autowired
+	private SedisteService sedisteService;
 
 	@Autowired
 	private WebApplicationContext webApplicationContext;
@@ -52,6 +74,68 @@ public class AdministratorPozoristaBioskopaControllerTest {
 		adminPB.setLozinka(AdministratorPozorBiosConstants.ADMINPB_LOZINKA);
 
 		String json = TestUtil.json(adminPB);
-		this.mockMvc.perform(post("/peraperic/izmenaPodatakaAdminaPB").contentType(contentType).content(json)).andExpect(status().isOk());
+		this.mockMvc.perform(post("/jovaperic/izmenaPodatakaAdminaPB").contentType(contentType).content(json)).andExpect(status().isOk());
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testAddSala() throws Exception{
+		
+		this.mockMvc.perform(post("/sala4/jovaperic/dodajSalu")).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetAllSale() throws Exception{
+		this.mockMvc.perform(get("/jovaperic/allSale")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$.sale", hasSize(3)))
+		.andExpect(jsonPath("$.sale[0]").value("sala1"));
+	}
+	
+	@Test
+	public void testGetKonfiguracijaSale() throws Exception{
+		this.mockMvc.perform(get("/jovaperic/sala1/konfiguracijaSale")).andExpect(status().isOk())
+		.andExpect(content().contentType(contentType)).andExpect(jsonPath("$", hasSize(120)))
+		.andExpect(jsonPath("$[0].tipSedista").value("VIP"))
+		.andExpect(jsonPath("$[0].red").value(1))
+		.andExpect(jsonPath("$[0].kolona").value(1))
+		.andExpect(jsonPath("$[5].tipSedista").value("PROLAZ"))
+		.andExpect(jsonPath("$[5].red").value(1))
+		.andExpect(jsonPath("$[5].kolona").value(6));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testUpdateKonfiguracija() throws Exception{
+		Bioskop bio = bioskopService.findByNaziv("CineStar Zrenjanin");
+		Sala sala = salaService.findByNazivAndBioskop("sala3", bio);
+		List<Sediste> sedista = sedisteService.findBySala(sala);
+		List<SedisteDTO> sedistaDTO = new ArrayList<SedisteDTO>();
+		for (Sediste sediste : sedista) {
+			String tipSedista = "";
+			if(sediste.getTipSedista() == TipSedista.OBICNO) {
+				tipSedista = "obicno";
+			}
+			else if(sediste.getTipSedista() == TipSedista.ZA_BRZU_REZERVACIJU) {
+				tipSedista = "brza";
+			}
+			else if(sediste.getTipSedista() == TipSedista.PROLAZ) {
+				tipSedista = "prolaz";
+			}
+			else if(sediste.getTipSedista() == TipSedista.VIP) {
+				tipSedista = "vip";
+			}
+			SedisteDTO sedDTO = new SedisteDTO(sediste.getRed(), sediste.getKolona(), tipSedista);
+			sedistaDTO.add(sedDTO);
+		}
+		
+		for (SedisteDTO sedisteDTO : sedistaDTO) {
+			sedisteDTO.setTip("vip");
+		}
+		KonfiguracijaDTO konfDTO = new KonfiguracijaDTO("jovaperic", sedistaDTO, sala.getNaziv());
+		
+		String json = TestUtil.json(konfDTO);
+		this.mockMvc.perform(post("/jovaperic/sala3/izmeniKonfiguraciju").contentType(contentType).content(json)).andExpect(status().isOk());
 	}
 }

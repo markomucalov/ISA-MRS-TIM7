@@ -201,10 +201,13 @@
     				<div class="form-group">
     					<label class="control-label col-sm-3" for="nazivSale">Naziv sale:</label>
     					<div class="col-sm-3">
-      						<input type="text" class="form-control" id="nazivSale" placeholder="Naziv sale" onblur="check_ime_prezime()">
+      						<input type="text" class="form-control" id="nazivSale" placeholder="Naziv sale">
     					</div>
     					<div class="col-sm-3">
       						<button type="submit" class="btn btn-default" onclick="dodajSalu()">Dodaj novu salu</button>
+    					</div>
+    					<div class="col-sm-3">
+    							<label class="error_nazivaSale" style="color:red"></label>
     					</div>
     				</div>
     			</form>
