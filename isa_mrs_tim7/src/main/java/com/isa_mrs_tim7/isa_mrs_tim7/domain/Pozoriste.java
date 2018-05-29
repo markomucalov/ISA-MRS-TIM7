@@ -43,6 +43,10 @@ public class Pozoriste implements Serializable {
 	
 	@Column(nullable = false)
 	private String promotivniOpis;
+	
+	@OneToMany(mappedBy="pozoriste")
+	@JsonManagedReference
+	private List<Sala> sale;
     
     public Pozoriste() {
     	
@@ -105,6 +109,14 @@ public class Pozoriste implements Serializable {
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public List<Sala> getSale() {
+		return sale;
+	}
+
+	public void setSale(List<Sala> sale) {
+		this.sale = sale;
 	}
 
 	

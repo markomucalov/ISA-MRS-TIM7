@@ -10,6 +10,8 @@ var error_potvrdaLozinke = false;
 
 var korisIme = "";
 
+var ulogovaniAdmin = "";
+
 
 function check_broj() {
 		
@@ -228,6 +230,8 @@ function postaviPodatkeAdminaNaFormu(korImeAdmina){
 	
 	var nazivBioskopa;
 	
+	ulogovaniAdmin = korImeAdmina;
+	
 	$.get('http://localhost:8080/'+korImeAdmina+'/bioskopPozoristeAdmin', function (data) {
 		var response = data;
 		$("#ime").val(response.ime);
@@ -240,6 +244,7 @@ function postaviPodatkeAdminaNaFormu(korImeAdmina){
 		nazivBioskopa = response.bioskop.naziv;
 		postaviPodatkeNaFormu(nazivBioskopa);
 		ucitajRepertoarBioskopa(nazivBioskopa);
+		ucitajSale(korImeAdmina);
 	})
 }
 
@@ -460,4 +465,231 @@ function check_form_dodaj_film() {
 
 function ucitajRepertoarPozorista(){
 	/*TODO*/
+}
+
+/*funkcije za rad sa SALAMA*/
+
+function dodajSalu(){
+	var nazivSale = $("#nazivSale").val();
+	$.ajax({
+		  type: 'POST',
+		  url: 'http://localhost:8080/'+nazivSale+'/'+ulogovaniAdmin+'/dodajSalu',
+		  statusCode: {
+		    409: function() {
+		      alert('Sala sa tim nazivom vec postoji.');
+		    }
+		  },
+		  success: function(result) {
+			  alert('Uspesno ste dodali salu.');
+			  $("#selektovanjeSala").append($("<option></option>").attr("value",nazivSale).text(nazivSale));
+		    return;
+		  },
+		  error: function(result) {
+		    // error response - look at 'result' object
+		    return;
+		  }
+		});
+}
+
+function ucitajSale(korImeAdmina){
+	$.get('http://localhost:8080/'+korImeAdmina+'/allSale', function (data) {
+		var response = data;
+		$("#selektovanjeSala").children().remove();
+		$("#selektovanjeSala").append($("<option></option>").attr("value","").text(""));
+		for(var i in response.sale){
+			$("#selektovanjeSala").append($("<option></option>").attr("value",response.sale[i]).text(response.sale[i]));
+		}
+		for(var i = 1; i<= 10; i++){
+			for(var j = 1; j<=12; j++){
+				$("#rec"+i+j).hide();
+			}
+		}
+	})
+}
+
+function ucitajKonfiguracijuSale(){
+
+    var selektovanaSala = $('#selektovanjeSala').find(":selected").text();
+    if( selektovanaSala != ""){
+    	$.get('http://localhost:8080/'+ulogovaniAdmin+'/'+selektovanaSala+'/konfiguracijaSale', function (data) {		
+    		var response = data;
+    		
+    		var trenutni = 0;
+    		
+    		for(var i = 1; i<= 10; i++){
+    			for(var j = 1; j<=12; j++){
+    				if(response[trenutni].tipSedista == "OBICNO" && response[trenutni].red == i && response[trenutni].kolona == j){
+    					$("#rec"+i+j).css({ fill: "#ffffff", stroke: "#000000" });
+    					$("#rec"+i+j).attr("name", "obicno");
+    					/*$("#rec"+i+j).attr("onclick", "promenaKonfiguracije()");*/
+    					$("#rec"+i+j).on('click', function(d,i) {
+    						var idSedista = this.id;
+    						if($('#opcijaObicno').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "obicno"); 
+    						}
+    						else if($('#opcijaBrza').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#33cc33", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "brza"); 
+    						}
+    						else if($('#opcijaVip').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ff9900", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "vip");
+    						}
+    						else if($('#opcijaProlaz').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#ffffff" });
+    							$("#"+idSedista).attr("name", "prolaz"); 
+    						}
+    			        })
+    					$("#rec"+i+j).show();
+    				}
+    				else if(response[trenutni].tipSedista == "VIP" && response[trenutni].red == i && response[trenutni].kolona == j){
+    					$("#rec"+i+j).css({ fill: "#ff9900", stroke: "#000000" });
+    					$("#rec"+i+j).attr("name", "vip");
+    					/*$("#rec"+i+j).attr("onclick", "promenaKonfiguracije()");*/
+    					$("#rec"+i+j).on('click', function(d,i) {
+    						var idSedista = this.id;
+    						if($('#opcijaObicno').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "obicno"); 
+    						}
+    						else if($('#opcijaBrza').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#33cc33", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "brza"); 
+    						}
+    						else if($('#opcijaVip').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ff9900", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "vip");
+    						}
+    						else if($('#opcijaProlaz').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#ffffff" });
+    							$("#"+idSedista).attr("name", "prolaz"); 
+    						}
+    			        })
+    					$("#rec"+i+j).show();
+    				}
+    				else if(response[trenutni].tipSedista == "ZA_BRZU_REZERVACIJU" && response[trenutni].red == i && response[trenutni].kolona == j){
+    					$("#rec"+i+j).css({ fill: "#33cc33", stroke: "#000000" });
+    					$("#rec"+i+j).attr("name", "brza");
+    					/*$("#rec"+i+j).attr("onclick", "promenaKonfiguracije()");*/
+    					$("#rec"+i+j).on('click', function(d,i) {
+    						var idSedista = this.id;
+    						if($('#opcijaObicno').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "obicno"); 
+    						}
+    						else if($('#opcijaBrza').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#33cc33", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "brza"); 
+    						}
+    						else if($('#opcijaVip').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ff9900", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "vip");
+    						}
+    						else if($('#opcijaProlaz').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#ffffff" });
+    							$("#"+idSedista).attr("name", "prolaz"); 
+    						}
+    			        })
+    					$("#rec"+i+j).show();
+    				}
+    				else if(response[trenutni].tipSedista == "PROLAZ" && response[trenutni].red == i && response[trenutni].kolona == j){
+    					$("#rec"+i+j).css({ fill: "#ffffff", stroke: "#ffffff" });
+    					$("#rec"+i+j).attr("name", "prolaz");
+    					/*$("#rec"+i+j).attr("onclick", "promenaKonfiguracije()");*/
+    					$("#rec"+i+j).on('click', function(d,i) {
+    						var idSedista = this.id;
+    						if($('#opcijaObicno').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "obicno"); 
+    						}
+    						else if($('#opcijaBrza').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#33cc33", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "brza"); 
+    						}
+    						else if($('#opcijaVip').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ff9900", stroke: "#000000" });
+    							$("#"+idSedista).attr("name", "vip");
+    						}
+    						else if($('#opcijaProlaz').is(':checked')) {
+    							$("#"+idSedista).css({ fill: "#ffffff", stroke: "#ffffff" });
+    							$("#"+idSedista).attr("name", "prolaz"); 
+    						}
+    			        })
+    					$("#rec"+i+j).show();
+    				}
+    				
+    				trenutni++;
+    			}
+    		}
+    	})
+    }
+    else{
+    	for(var i = 1; i<= 10; i++){
+			for(var j = 1; j<=12; j++){
+				$("#rec"+i+j).hide();
+			}
+		}
+    }
+	
+}
+
+/*function promenaKonfiguracije(){
+	var idSedista = $("rect").attr("id");
+	if($('#opcijaObicno').is(':checked')) {
+		$("#"+idSedista).css({ fill: "#ffffff", stroke: "#000000" });
+		$("#"+idSedista).attr("name", "obicno"); 
+	}
+	else if($('#opcijaBrza').is(':checked')) {
+		$("#"+idSedista).css({ fill: "#33cc33", stroke: "#000000" });
+		$("#"+idSedista).attr("name", "brza"); 
+	}
+	else if($('#opcijaVip').is(':checked')) {
+		$("#"+idSedista).css({ fill: "#ff9900", stroke: "#000000" });
+		$("#"+idSedista).attr("name", "vip");
+	}
+	else if($('#opcijaProlaz').is(':checked')) {
+		$("#"+idSedista).css({ fill: "#ffffff", stroke: "#ffffff" });
+		$("#"+idSedista).attr("name", "prolaz"); 
+	}
+}*/
+
+function sacuvajKonfiguraciju(){
+	
+	var selektovanaSala = $('#selektovanjeSala').find(":selected").text();
+	
+	var konfiguracijaDTO={
+			"korisnickoIme": ulogovaniAdmin,
+		    "sedista": [],
+		    "sala": selektovanaSala
+		}
+	var brojac = 0;
+	
+	for(var i = 1; i<= 10; i++){
+		for(var j = 1; j<=12; j++){
+			var sediste={
+					"red": i,
+					"kolona": j,
+					"tip": $("#rec"+i+j).attr("name")
+			}
+			konfiguracijaDTO.sedista[brojac] = sediste;
+			brojac++;			
+		}
+	}
+	
+	$.ajax({
+	    url: 'http://localhost:8080/'+ulogovaniAdmin+'/'+selektovanaSala+'/izmeniKonfiguraciju',
+	    type: 'POST',
+	    data: JSON.stringify(konfiguracijaDTO),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    statusCode: {
+		    200: function() {
+		    	alert('Uspesno ste sacuvali konfiguraciju.');
+		    }
+		  },
+	    success: function(result) {
+	    	alert('Uspesno ste sacuvali konfiguraciju.');
+	    }
+	});
 }

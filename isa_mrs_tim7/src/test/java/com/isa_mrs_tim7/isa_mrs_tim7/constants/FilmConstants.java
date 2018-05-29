@@ -12,5 +12,5 @@ public class FilmConstants {
 	public static final String SLIKA = "images/filmDefault.png";
 	
 	public static final String BIOSKOP_NAZIV_DELETE = "Roda Cineplexx";
-	public static final String FILM_NAZIV_DELETE = "Novi Film";
+	public static final String FILM_NAZIV_DELETE = "Film test";
 }

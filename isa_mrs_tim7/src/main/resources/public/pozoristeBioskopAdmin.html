@@ -7,6 +7,14 @@
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+<style type="text/css">
+	.btn span.glyphicon {    			
+		opacity: 0;				
+	}
+	.btn.active span.glyphicon {				
+		opacity: 1;				
+	}
+</style>
 </head>
 <body>
 	<div id="profilAdminaPB">
@@ -189,7 +197,324 @@
 				</form>
   			</div>
   			<div id="konfiguracija" class="tab-pane fade">
-    			<h3>U IZRADI</h3>
+    			<form class="form-horizontal" id="dodavanjeSale" action="#" style="margin-top:50px">
+    				<div class="form-group">
+    					<label class="control-label col-sm-3" for="nazivSale">Naziv sale:</label>
+    					<div class="col-sm-3">
+      						<input type="text" class="form-control" id="nazivSale" placeholder="Naziv sale" onblur="check_ime_prezime()">
+    					</div>
+    					<div class="col-sm-3">
+      						<button type="submit" class="btn btn-default" onclick="dodajSalu()">Dodaj novu salu</button>
+    					</div>
+    				</div>
+    			</form>
+    			<form class="form-horizontal" id="konfiguracijaSale" action="#" style="margin-top:50px">
+    				<div class="row">
+    					<div class="col-sm-4">
+    						<div class="row"></div>
+    						<div class="row"></div>
+    						<div class="row">
+    							<label  class="control-label col-sm-6" for="selektovanjeSala">Sala:</label>
+    							<div class="col-sm-6">
+    								<select class="form-control" id="selektovanjeSala" onchange="ucitajKonfiguracijuSale()">
+    									
+ 									</select>
+    							</div>
+    						</div>
+    						<div class="row"></div>
+    						<div class="row"></div>
+    					</div>
+    					<div class="col-sm-8">
+    						<svg width="500" height="420" style="border-style: solid">
+    							<rect id="rec11" x="10" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec12" x="50" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec13" x="90" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec14" x="130" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec15" x="170" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec16" x="210" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec17" x="250" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec18" x="290" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec19" x="330" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec110" x="370" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec111" x="410" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec112" x="450" y="10" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec21" x="10" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec22" x="50" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec23" x="90" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec24" x="130" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec25" x="170" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec26" x="210" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec27" x="250" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec28" x="290" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec29" x="330" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec210" x="370" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec211" x="410" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec212" x="450" y="50" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec31" x="10" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec32" x="50" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec33" x="90" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec34" x="130" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec35" x="170" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec36" x="210" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec37" x="250" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec38" x="290" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec39" x="330" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec310" x="370" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec311" x="410" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec312" x="450" y="90" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec41" x="10" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec42" x="50" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec43" x="90" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec44" x="130" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec45" x="170" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec46" x="210" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec47" x="250" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec48" x="290" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec49" x="330" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec410" x="370" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec411" x="410" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec412" x="450" y="130" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec51" x="10" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec52" x="50" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec53" x="90" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec54" x="130" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec55" x="170" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec56" x="210" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec57" x="250" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec58" x="290" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec59" x="330" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec510" x="370" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec511" x="410" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec512" x="450" y="170" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec61" x="10" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec62" x="50" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec63" x="90" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec64" x="130" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec65" x="170" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec66" x="210" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec67" x="250" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec68" x="290" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec69" x="330" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec610" x="370" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec611" x="410" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec612" x="450" y="210" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec71" x="10" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec72" x="50" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec73" x="90" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec74" x="130" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec75" x="170" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec76" x="210" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec77" x="250" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec78" x="290" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec79" x="330" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec710" x="370" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec711" x="410" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec712" x="450" y="250" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec81" x="10" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec82" x="50" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec83" x="90" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec84" x="130" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec85" x="170" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec86" x="210" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec87" x="250" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec88" x="290" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec89" x="330" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec810" x="370" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec811" x="410" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec812" x="450" y="290" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec91" x="10" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec92" x="50" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec93" x="90" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec94" x="130" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec95" x="170" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec96" x="210" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec97" x="250" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec98" x="290" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec99" x="330" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec910" x="370" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec911" x="410" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec912" x="450" y="330" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								
+  								<rect id="rec101" x="10" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec102" x="50" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec103" x="90" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec104" x="130" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec105" x="170" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec106" x="210" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec107" x="250" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec108" x="290" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec109" x="330" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec1010" x="370" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec1011" x="410" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+  								<rect id="rec1012" x="450" y="370" rx="5" ry="5" width="30" height="30"
+  								style="fill:white;stroke:black;stroke-width:5;opacity:0.5" />
+    						</svg>
+    					</div>
+    				</div>		
+    			</form>
+    			
+    			<div class="row">
+    				<div class="col-sm-3"> 
+    				
+    					<button type="button" class="btn btn-default" onclick="sacuvajKonfiguraciju()">Sacuvaj konfiguraciju</button>
+    				   					
+    				</div>
+    				<div class="col-sm-3">			
+    				</div>
+    				<div class="col-sm-6">
+    					<div class="btn-group" data-toggle="buttons">
+
+							<label class="btn btn-default">
+								<input type="radio" name="options" id="opcijaObicno" autocomplete="off">
+								<span class="glyphicon glyphicon-ok" title="Obicno mesto"></span>
+							</label>
+			
+							<label class="btn btn-success">
+								<input type="radio" name="options" id="opcijaBrza" autocomplete="off">
+								<span class="glyphicon glyphicon-ok" title="Brza rezervacija"></span>
+							</label>
+			
+							<label class="btn btn-primary">
+								<input type="radio" name="options" id="opcijaProlaz" autocomplete="off">
+								<span class="glyphicon glyphicon-ok" title="Prolaz"></span>
+							</label>
+
+							<label class="btn btn-warning">
+								<input type="radio" name="options" id="opcijaVip" autocomplete="off">
+								<span class="glyphicon glyphicon-ok" title="VIP"></span>
+							</label>
+		
+						</div>
+    				</div>
+    			</div>
+    			
   			</div>
   			<div id="statistika" class="tab-pane fade">
     			<h3>U IZRADI</h3>
