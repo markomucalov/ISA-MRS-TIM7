@@ -14,6 +14,10 @@
 	.btn.active span.glyphicon {				
 		opacity: 1;				
 	}
+	
+	.with-margin {
+  		margin-top: 10px;
+	}
 </style>
 </head>
 <body>
@@ -22,6 +26,7 @@
   			<li class="active"><a data-toggle="pill" href="#pozoriste-bioskop">Profil pozorista</a></li>
   			<li><a data-toggle="pill" href="#repertoar">Repertoar</a></li>
   			<li><a data-toggle="pill" href="#konfiguracija">Konfuguracija sala</a></li>
+  			<li><a data-toggle="pill" href="#projekcije-tab">Termini projekcija</a></li>
   			<li><a data-toggle="pill" href="#statistika">Izvestaj - statistika</a></li>
   			<li><a data-toggle="pill" href="#licni-podaci" onclick="postaviPodatkeAdminaNaFormu('jovaperic')">Licni podaci</a></li>
 		</ul>
@@ -484,12 +489,9 @@
     			</form>
     			
     			<div class="row">
-    				<div class="col-sm-3"> 
-    				
-    					<button type="button" class="btn btn-default" onclick="sacuvajKonfiguraciju()">Sacuvaj konfiguraciju</button>
-    				   					
-    				</div>
-    				<div class="col-sm-3">			
+    				<div class="col-sm-2"></div>
+    				<div class="col-sm-4">
+    					<button type="button" class="btn btn-default" onclick="sacuvajKonfiguraciju()">Sacuvaj konfiguraciju</button>			
     				</div>
     				<div class="col-sm-6">
     					<div class="btn-group" data-toggle="buttons">
@@ -517,7 +519,38 @@
 						</div>
     				</div>
     			</div>
+    			<div class="row">
+    				<div class="col-sm-4"></div>
+    				<div class="col-sm-1 with-margin"><p class="text-dark" style="font-size: 20px"><b>Legenda:</b></p></div>
+    				<div class="col-sm-2 with-margin"><p style="background-color: white; border-style: solid; text-align: center">obicno mesto</p></div>
+    				<div class="col-sm-2 with-margin"><p style="background-color: #00b33c; border-style: solid; text-align: center">brza rezervacija</p></div>
+    				
+    			</div>
+    			<div class="row">
+    				<div class="col-sm-4"></div>
+    				<div class="col-sm-1"></div>
+    				<div class="col-sm-2 with-margin"><p style="background-color: #0066ff; color: white; border-style: solid; text-align: center">praznina - prolaz</p></div>
+    				<div class="col-sm-2 with-margin"><p style="background-color: #ffa64d; border-style: solid; text-align: center">vip mesto</p></div>
+    			</div>
     			
+  			</div>
+  			<div id="projekcije-tab" class="tab-pane fade">
+  				<div class="scrollable" style="height:200px; overflow-y:scroll">
+					<table class="table table-hover" id="tabela_termini_projekcija">
+						<thead>
+      						<tr>
+        						<th>Naslov</th>
+        						<th>Pocetak</th>
+        						<th>Kraj</th>
+        						<th>Trajanje</th>
+      						</tr>
+    					</thead>
+    					<tbody id="tabela_termini_projekcija_sadrzaj">
+      			
+    					</tbody>
+  					</table>
+				</div>
+    			<h3>U IZRADI</h3>
   			</div>
   			<div id="statistika" class="tab-pane fade">
     			<h3>U IZRADI</h3>
