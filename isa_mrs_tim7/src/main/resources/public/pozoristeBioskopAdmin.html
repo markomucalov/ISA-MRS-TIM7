@@ -7,6 +7,8 @@
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap.min.css">
 <link rel="stylesheet" href="webjars/bootstrap/3.3.6/css/bootstrap-theme.min.css">
 <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.10/css/all.css">
+<link rel="stylesheet" type="text/css" href="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.css"> 
+<link rel="stylesheet" type="text/css" href="datepicker/css/datepicker.css" />
 <style type="text/css">
 	.btn span.glyphicon {    			
 		opacity: 0;				
@@ -535,22 +537,107 @@
     			
   			</div>
   			<div id="projekcije-tab" class="tab-pane fade">
-  				<div class="scrollable" style="height:200px; overflow-y:scroll">
-					<table class="table table-hover" id="tabela_termini_projekcija">
-						<thead>
-      						<tr>
-        						<th>Naslov</th>
-        						<th>Pocetak</th>
-        						<th>Kraj</th>
-        						<th>Trajanje</th>
-      						</tr>
-    					</thead>
-    					<tbody id="tabela_termini_projekcija_sadrzaj">
+  				<div class="row">
+  					<div class="col-sm-2"></div>
+  					<div class="col-sm-8">
+  						<div class="scrollable" style="height:200px; width:800px; overflow-y:scroll">
+							<table class="table table-hover" id="tabela_termini_projekcija">
+								<thead>
+      								<tr>
+        								<th>Naslov</th>
+        								<th>Pocetak</th>
+        								<th>Kraj</th>
+        								<th>Trajanje</th>
+      								</tr>
+    							</thead>
+    							<tbody id="tabela_termini_projekcija_sadrzaj">
       			
-    					</tbody>
-  					</table>
-				</div>
-    			<h3>U IZRADI</h3>
+    							</tbody>
+  							</table>
+						</div>
+  					</div>
+  					<div class="col-sm-2"></div>
+  				</div>
+  				
+				<form class="form-horizontal" id="dodavanjeTerminaProjekcije" action="#" style="margin-top:50px">
+    				<div class="form-group">
+    					<div class="row">
+    						<div class="col-sm-2"></div>
+    						<label class="control-label col-sm-1" for="salaTermini">Sala:</label>
+    						<div class="col-sm-2">
+      							<select class="form-control" id="salaTermini" onchange="omoguciOdabirDatuma()">			
+ 								</select>
+    						</div>
+    						<div class="col-sm-1"></div>
+    						<label class="control-label col-sm-1" for="naslovTermini">Naslov:</label>
+    						<div class="col-sm-2">
+      							<select class="form-control" id="naslovTermini" disabled onchange="omoguciOdabirVremena()">			
+ 								</select>
+    						</div>
+    						<div class="col-sm-3"></div>
+    						
+    					</div>
+    					<div class="row">
+    						<div class="col-sm-2"></div>
+    						<label class="control-label col-sm-1" for="datumTermin" style="margin-top:25px">Datum:</label>
+    						<div class="col-sm-3">
+    							<div class="input-group datepicker" style="margin-top:20px">
+    								<input  type="text" class="form-control"  id="datumTermin" disabled/>
+    								<span class="input-group-addon">
+        								<span class="glyphicon glyphicon-calendar"></span>
+    								</span>								
+    							</div>
+    						</div>
+    						<label class="control-label col-sm-1" for="vremeTermin" style="margin-top:25px">Pocetak:</label>
+    						<div class="col-sm-3">
+      							<div class="input-group clockpicker" style="margin-top:25px">
+    								<input type="text" class="form-control" value="09:30" id="vremeTermin" disabled>
+    								<span class="input-group-addon">
+        								<span class="glyphicon glyphicon-time"></span>
+    								</span>
+								</div>
+    						</div>				
+    					</div>
+    					<div class="row">
+    						<div class="col-sm-1"></div>
+    						<div class="col-sm-2"><h3 style="margin-top:25px">Cene karata:</h3></div>
+    						
+    					</div>
+    					<div class="row">
+    						<div class="col-sm-1"></div>
+    						<label class="control-label col-sm-1" for="obicneCena" style="margin-top:25px">Obicne:</label>
+    						<div class="col-sm-2">
+      							<input type="text" class="form-control" id="obicneCena" placeholder="" style="margin-top:25px" disabled onblur="proveriCenuObicne()">
+    						</div>
+    						<label class="control-label col-sm-1" for="popustObicne" style="margin-top:25px">Popust:</label>
+    						<div class="col-sm-2">
+      							<input type="text" class="form-control" id="popustObicne" placeholder="" style="margin-top:25px" disabled onblur="proveriPopustObicne()">
+    						</div>
+    						<label class="control-label col-sm-1" for="vipCena" style="margin-top:25px">VIP:</label>
+    						<div class="col-sm-2">
+      							<input type="text" class="form-control" id="vipCena" placeholder="" style="margin-top:25px" disabled onblur="proveriCenuVIP()">
+    						</div>
+    						
+    					</div>
+    					<div class="row">
+    						<div class="col-sm-1"></div>
+    						<div class="col-sm-3">
+    							<label class="error_obicna_karta_cena" style="color:red"></label>
+    						</div>
+    						<div class="col-sm-3">
+    							<label class="error_popust_karta_procenat" style="color:red"></label>
+    						</div>
+    						<div class="col-sm-3">
+    							<label class="error_vip_karta_cena" style="color:red"></label>
+    						</div>
+    					</div>
+    					<div class="row justify-content-center">
+    						<div class="col-sm-5"></div>
+    						<div class="col-sm-3"><button type="submit" class="btn btn-default" style="margin-top:25px" onclick="proveriTerminIKarte()">Dodaj termin</button></div>
+    						<div class="col-sm-4"></div>
+    					</div>
+    				</div>
+    			</form>
   			</div>
   			<div id="statistika" class="tab-pane fade">
     			<h3>U IZRADI</h3>
@@ -623,6 +710,24 @@
 				</form>
   			</div>
 		</div>
-	</div>			
+	</div>
+	
+	<script type="text/javascript" src="clockpicker-gh-pages/dist/bootstrap-clockpicker.min.js"></script>
+	<script src="datepicker/js/bootstrap-datepicker.js"></script>
+	<script type="text/javascript">
+    	$('.clockpicker').clockpicker({
+    		donetext: 'Zavrsi',
+    		afterDone: function() {
+                proveriVreme();
+            }
+    	});
+    	$('#datumTermin').datepicker({
+        	format: "dd/mm/yyyy"
+    	});
+    	$('#datumTermin').datepicker()
+        	.on('changeDate', function(e) {
+        		proveriDatum();
+        });
+	</script>			
 </body>
 </html>

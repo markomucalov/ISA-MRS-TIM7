@@ -1,5 +1,7 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.controller;
 
+import java.sql.Date;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,19 +16,27 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.AdministratorPozoristaBioskopa;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Karta;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Pozoriste;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sala;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sediste;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.TerminPredstaveProjekcije;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.TipKarte;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.TipSedista;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.AdministratorPozBiDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.KonfiguracijaDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SaleDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SedisteDTO;
+import com.isa_mrs_tim7.isa_mrs_tim7.dto.TerminPredstaveProjekcijeDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.AdministratorPozoristaBioskopaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.BioskopService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.FilmService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.KartaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.PozoristeService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.SalaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.SedisteService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.TerminPredstaveProjekcijeService;
 
 @RestController
 public class AdministratorPozoristaBioskopaController {
@@ -45,6 +55,16 @@ public class AdministratorPozoristaBioskopaController {
 	
 	@Autowired
 	SedisteService sedisteService;
+	
+	@Autowired
+	TerminPredstaveProjekcijeService terminService;
+	
+	@Autowired
+	FilmService filmService;
+	
+	@Autowired
+	KartaService kartaService;
+
 	
 	@RequestMapping(value="/{adminIme}/bioskopPozoristeAdmin", method=RequestMethod.GET)
 	public ResponseEntity<AdministratorPozoristaBioskopa> getBioskop(@PathVariable String adminIme){
@@ -306,6 +326,106 @@ public class AdministratorPozoristaBioskopaController {
 			
 			return new ResponseEntity<>(HttpStatus.OK);
 		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(value = "/{adminKorIme}/{nazivSale}/{datumTermina}/terminiSalaDatum", method=RequestMethod.GET)
+	public ResponseEntity<List<TerminPredstaveProjekcije>> getAllTerminiBySalaDatum(@PathVariable String adminKorIme, @PathVariable String nazivSale, @PathVariable Date datumTermina){
+		
+		AdministratorPozoristaBioskopa adminPB = adminPozBioSer.findByKorIme(adminKorIme);
+		
+		if(adminPB == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		if(adminPB.getBioskop() != null) {
+			Bioskop bio = adminPB.getBioskop();
+			Sala sala = salaService.findByNazivAndBioskop(nazivSale, bio);
+			List<TerminPredstaveProjekcije> terminiSalaDatum = terminService.findAllBySalaAndDatum(sala, datumTermina);
+			return new ResponseEntity<>(terminiSalaDatum, HttpStatus.OK);
+		}
+		
+		else if(adminPB.getPozoriste() != null) {
+			Pozoriste poz = adminPB.getPozoriste();
+			Sala sala = salaService.findByNazivAndPozoriste(nazivSale, poz);
+			List<TerminPredstaveProjekcije> terminiSalaDatum = terminService.findAllBySalaAndDatum(sala, datumTermina);
+			return new ResponseEntity<>(terminiSalaDatum, HttpStatus.OK);
+		}
+		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(value = "/{adminKorIme}/{nazivSale}/dodajTerminPrPro", method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> addTerminPredstaveProjekcije(@PathVariable String adminKorIme, @PathVariable String nazivSale, @RequestBody TerminPredstaveProjekcijeDTO terminPredProDTO){
+		
+		AdministratorPozoristaBioskopa adminPB = adminPozBioSer.findByKorIme(adminKorIme);
+		
+		if(adminPB == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		if(adminPB.getBioskop() != null) {
+			Bioskop bio = adminPB.getBioskop();
+			Sala sala = salaService.findByNazivAndBioskop(nazivSale, bio);
+			TerminPredstaveProjekcije noviTermin = new TerminPredstaveProjekcije();
+			Film film = filmService.findFilmByNaizvAndBioskop(terminPredProDTO.getNaslov(), bio);
+			
+			noviTermin.setNaslov(film.getNaizv());
+			noviTermin.setPocetak(Time.valueOf(terminPredProDTO.getVreme()));
+			noviTermin.setTrajanje(film.getTrajanje());
+			long pocetakMilliseconds = Time.valueOf(terminPredProDTO.getVreme()).getTime();
+			long trajanjeMilliseconds = film.getTrajanje().getTime();
+			long sumVreme = pocetakMilliseconds + trajanjeMilliseconds;
+			long dan = 24*3600000;
+			long satLetnjeVreme = 3600000;
+			sumVreme += satLetnjeVreme;
+			if(sumVreme > dan) {
+				sumVreme = sumVreme - dan;
+			}
+			noviTermin.setKraj(new Time(sumVreme));
+			/*Time kraj = Time.valueOf(terminPredProDTO.getVreme());
+			long pocetakMilliseconds = kraj.getTime();
+			long trajanjeMilliseconds = film.getTrajanje().getTime();
+			kraj.setTime(pocetakMilliseconds+trajanjeMilliseconds);
+			noviTermin.setKraj(kraj);*/
+			noviTermin.setDatum(terminPredProDTO.getDatum());
+			noviTermin.setSala(sala);
+			noviTermin.setKarte(new ArrayList<Karta>());
+			terminService.save(noviTermin);
+			List<Sediste> sedista = sala.getSedista();
+			for (Sediste sediste : sedista) {
+				if(sediste.getTipSedista() != TipSedista.PROLAZ) {
+					Karta karta = new Karta();
+					karta.setKolona(sediste.getKolona());
+					karta.setRed(sediste.getRed());
+					karta.setProdata(false);
+					karta.setTerminPredstaveProjekcije(noviTermin);
+					if(sediste.getTipSedista() == TipSedista.OBICNO) {
+						karta.setCena(terminPredProDTO.getCenaObicne());
+						karta.setPopust(0);
+						karta.setTipKarte(TipKarte.OBICNA);
+					}
+					else if(sediste.getTipSedista() == TipSedista.ZA_BRZU_REZERVACIJU) {
+						karta.setCena(terminPredProDTO.getCenaObicne());
+						karta.setPopust(terminPredProDTO.getPopust());
+						karta.setTipKarte(TipKarte.NA_POPUSTU);
+					}
+					else if(sediste.getTipSedista() == TipSedista.VIP) {
+						karta.setCena(terminPredProDTO.getCenaVip());
+						karta.setPopust(0);
+						karta.setTipKarte(TipKarte.VIP);
+					}
+					kartaService.save(karta);
+				}			
+			}
+			return new ResponseEntity<>(HttpStatus.OK);
+		}
+		
+		/*else if(adminPB.getPozoriste() != null) {
+			Pozoriste poz = adminPB.getPozoriste();
+			Sala sala = salaService.findByNazivAndPozoriste(nazivSale, poz);
+			TerminPredstaveProjekcije noviTermin = new TerminPredstaveProjekcije();
+		}*/
+		
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 }

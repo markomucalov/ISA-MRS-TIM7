@@ -266,6 +266,7 @@ function ucitajRepertoarBioskopa(nazivBioskopa){
 			var cell6 = row.insertCell(5);
 			
 			cell1.innerHTML = response[counter].naizv;
+			$("#naslovTermini").append($("<option></option>").attr("value",response[counter].naizv).text(response[counter].naizv));
 			cell2.innerHTML = response[counter].zanr;
 			cell3.innerHTML = response[counter].imeReditelja;
 			cell4.innerHTML = response[counter].trajanje;
@@ -503,8 +504,11 @@ function ucitajSale(korImeAdmina){
 		var response = data;
 		$("#selektovanjeSala").children().remove();
 		$("#selektovanjeSala").append($("<option></option>").attr("value","").text(""));
+		$("#salaTermini").children().remove();
+		$("#salaTermini").append($("<option></option>").attr("value","").text(""));
 		for(var i in response.sale){
 			$("#selektovanjeSala").append($("<option></option>").attr("value",response.sale[i]).text(response.sale[i]));
+			$("#salaTermini").append($("<option></option>").attr("value",response.sale[i]).text(response.sale[i]));
 		}
 		for(var i = 1; i<= 10; i++){
 			for(var j = 1; j<=12; j++){
@@ -697,6 +701,195 @@ function sacuvajKonfiguraciju(){
 		  },
 	    success: function(result) {
 	    	alert('Uspesno ste sacuvali konfiguraciju.');
+	    }
+	});
+}
+
+/*funkcije za rad sa TERMINIMA PREDSTAVA/PROJEKCIJA*/
+
+function omoguciOdabirDatuma(){
+	$("#datumTermin").prop('disabled', false);
+}
+
+function omoguciOdabirVremena(){
+	$("#vremeTermin").prop('disabled', false);
+}
+
+function proveriDatum(){
+	$("#naslovTermini").prop('disabled', false);
+	ucitajTermine();
+}
+
+function proveriVreme(){
+	$("#obicneCena").prop('disabled', false);
+	$("#popustObicne").prop('disabled', false);
+	$("#vipCena").prop('disabled', false);
+}
+
+function ucitajTermine(){
+	var korImeAdmina = ulogovaniAdmin;
+	var nazivSale = $("#salaTermini").find(":selected").text();
+	var datumTermina = $("#datumTermin").val();
+	var dan = datumTermina.split("/")[0];
+	var mesec = datumTermina.split("/")[1];
+	var godina = datumTermina.split("/")[2];
+	datumTermina = godina+"-"+mesec+"-"+dan
+	$.get('http://localhost:8080/'+korImeAdmina+'/'+nazivSale+'/'+datumTermina+'/terminiSalaDatum', function (data) {
+		var response = data;
+		var tabela = document.getElementById("tabela_termini_projekcija_sadrzaj");
+		$("#tabela_termini_projekcija").find("tr:not(:first)").remove();;
+		
+		for(var counter in response){
+			var row = tabela.insertRow(counter);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			
+			cell1.innerHTML = response[counter].naslov;
+			cell2.innerHTML = response[counter].pocetak;
+			cell3.innerHTML = response[counter].kraj;
+			cell4.innerHTML = response[counter].trajanje;
+		}
+	})
+}
+
+var error_cena_obicne = false;
+var error_popust_obicne =false;
+var error_cena_vip = false;
+var error_zauzet_termin = false;
+
+function proveriCenuObicne(){
+	var pattern = new RegExp(/^\d+$/);
+	
+	if(pattern.test($("#obicneCena").val())) {
+		$(".error_obicna_karta_cena").text("");
+	} else {
+		$(".error_obicna_karta_cena").text("Cena mora biti broj");
+		error_cena_obicne = true;
+	}
+}
+
+function proveriPopustObicne(){
+	var pattern = new RegExp(/^\d+$/);
+	
+	if(pattern.test($("#popustObicne").val())) {
+		if($("#popustObicne").val() > 100 || $("#popustObicne").val() < 0){
+			$(".error_popust_karta_procenat").text("Vrednost mora biti u opsegu 0-100 %");
+		}
+		else{
+			$(".error_popust_karta_procenat").text("");
+		}		
+	} else {
+		$(".error_popust_karta_procenat").text("Popust mora biti broj");
+		error_popust_obicne = true;
+	}
+}
+
+function proveriCenuVIP(){
+	var pattern = new RegExp(/^\d+$/);
+	
+	if(pattern.test($("#vipCena").val())) {
+		$(".error_vip_karta_cena").text("");
+	} else {
+		$(".error_vip_karta_cena").text("Cena mora biti broj");
+		error_cena_vip = true;
+	}
+}
+
+function proveriDostupnostTermina(){
+	var table = document.getElementById('tabela_termini_projekcija');
+
+	var rowLength = table.rows.length;
+
+	var dan = $("#datumTermin").val().split("/")[0];
+	var mesec = $("#datumTermin").val().split("/")[1];
+	var godina = $("#datumTermin").val().split("/")[2];
+	var izabranoVreme = godina+"-"+mesec+"-"+dan+"T"+$("#vremeTermin").val()+":00";
+	
+	for(var i=0; i<rowLength; i+=1){
+		if(i > 0){
+			var row = table.rows[i];
+
+			  var cellLength = row.cells.length;
+			  var pocetak = godina+"-"+mesec+"-"+dan;
+			  var kraj = godina+"-"+mesec+"-"+dan;
+			  var naslov = "";
+			  for(var y=0; y<cellLength; y+=1){
+				  if(y == 1){
+					  pocetak = pocetak+"T"+row.cells[y].innerText;
+				  }
+				  else if(y == 2){
+					  kraj = kraj+"T"+row.cells[y].innerText;
+				  }
+				  else if(y == 0){
+					  naslov = row.cells[y].innerText;
+				  }
+			  }
+			  
+			  var pocetakTime = new Date(pocetak);
+			  var izabranoTime = new Date(izabranoVreme);
+			  var krajTime = new Date(kraj);
+			  if(pocetakTime < izabranoTime && krajTime > izabranoTime){
+				  alert(naslov+' se prikazuje u odabrano vreme.');
+				  error_zauzet_termin = true;
+				  break;
+			  }
+		}
+	}
+}
+
+function proveriTerminIKarte(){
+	error_cena_obicne = false;
+	error_popust_obicne =false;
+	error_cena_vip = false;
+	error_zauzet_termin = false;
+	
+	proveriCenuObicne();
+	proveriPopustObicne();
+	proveriCenuVIP();
+	proveriDostupnostTermina();
+	if(error_cena_obicne == false && error_popust_obicne == false && error_cena_vip == false && error_zauzet_termin == false){
+		sacuvajTerminUBazi();
+	}
+}
+
+function sacuvajTerminUBazi(){
+	var sala = $("#salaTermini").val();
+	var naslov = $("#naslovTermini").val();
+	var datum = $("#datumTermin").val();
+	var dan = datum.split("/")[0];
+	var mesec = datum.split("/")[1];
+	var godina = datum.split("/")[2];
+	datum = godina+"-"+mesec+"-"+dan;
+	var vreme = $("#vremeTermin").val();
+	vreme = vreme +":00";
+	var cenaObicne = $("#obicneCena").val();
+	var popust = $("#popustObicne").val();
+	var cenaVip = $("#vipCena").val();
+	var terminDTO={
+			"sala": sala,
+		    "naslov": naslov,
+		    "datum": datum,
+		    "vreme": vreme,
+		    "cenaObicne": cenaObicne,
+		    "popust" : popust,
+		    "cenaVip" : cenaVip
+		}
+	
+	$.ajax({
+	    url: 'http://localhost:8080/'+ulogovaniAdmin+'/'+sala+'/dodajTerminPrPro',
+	    type: 'POST',
+	    data: JSON.stringify(terminDTO),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    statusCode: {
+		    200: function() {
+		    	alert('Uspesno ste dodali termin i karte za termin.');
+		    }
+		  },
+	    success: function(result) {
+	    	alert('Uspesno ste dodali termin i karte za termin.');
 	    }
 	});
 }

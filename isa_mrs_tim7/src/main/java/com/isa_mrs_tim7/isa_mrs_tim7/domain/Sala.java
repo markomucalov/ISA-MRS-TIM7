@@ -36,6 +36,10 @@ public class Sala implements Serializable {
 	@JsonManagedReference
 	private List<Sediste> sedista;
 	
+	@OneToMany(mappedBy="sala")
+	@JsonManagedReference
+	private List<TerminPredstaveProjekcije> termini;
+	
 	@ManyToOne(optional=true)
 	@JoinColumn(name="bioskop_id", unique=false)
 	@JsonBackReference
