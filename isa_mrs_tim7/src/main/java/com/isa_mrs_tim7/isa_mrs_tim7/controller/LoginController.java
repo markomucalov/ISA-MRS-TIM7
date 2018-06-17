@@ -1,6 +1,8 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.controller;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -40,6 +42,7 @@ import com.isa_mrs_tim7.isa_mrs_tim7.service.ServisLogin;
 
 @RestController
 public class LoginController  {
+	private Map<String, String> regis=new HashMap<String, String>();
 	private RegistrovaniKorisnik reg;
 	
 	private Logger logger = LoggerFactory.getLogger(this.getClass());
@@ -65,6 +68,7 @@ public class LoginController  {
 
 	        }
 	    	reg=this.userService.getKorisnik(podaci.getEmail(),podaci.getLozinka());
+	    	regis.put(podaci.getEmail(),"true");
 	       return reg;
 }
 	    

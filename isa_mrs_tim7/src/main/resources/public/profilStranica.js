@@ -8,7 +8,15 @@ var imenaPrezimena=[];
 var prijatelj={}; 
 var nova;
 
+
+
+
+
 $(window).load(function() {
+	
+	
+	
+	
 	$.get('http://localhost:8080/korisnici', function (data) {
 		for(var i in data.content){
 			console.log(data.content[i].email);
@@ -24,13 +32,22 @@ $(window).load(function() {
       });
 	
 	
+	
     
       
 });
 
+
+
+
 $("#prikaziZah").on("click", function() {
 	prikaziZahteve();
 	});
+
+$("#dobavi").on("click", function() {
+	dobaviPoz();
+	});
+
 
 
 
@@ -354,7 +371,7 @@ function prikaziZahteve(){
 	
 	
 	
-};
+}
 
 function prihvatiPrijatelja(){
 var emailP = $(event.target).parent().siblings().first().next().text();
@@ -460,3 +477,4 @@ var emailP = $(event.target).parent().siblings().first().next().text();
 	
 	
 }
+

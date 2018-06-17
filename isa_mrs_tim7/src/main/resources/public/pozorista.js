@@ -538,7 +538,8 @@ function preuzmiAdresu(param){
 }
 
 function ucitajAdminPozBio(){
-	$("#pocetna").hide();
+
+
 	$("#adminPB").load("pozoristeBioskopAdmin.html");
 	$("#adminPB").show();
 	
