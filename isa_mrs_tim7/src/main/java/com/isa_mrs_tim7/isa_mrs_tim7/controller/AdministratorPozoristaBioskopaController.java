@@ -25,6 +25,7 @@ import com.isa_mrs_tim7.isa_mrs_tim7.domain.TerminPredstaveProjekcije;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.TipKarte;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.TipSedista;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.AdministratorPozBiDTO;
+import com.isa_mrs_tim7.isa_mrs_tim7.dto.KartaNaPopustuDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.KonfiguracijaDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SaleDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SedisteDTO;
@@ -427,5 +428,32 @@ public class AdministratorPozoristaBioskopaController {
 		}*/
 		
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(value = "/getAllKarteNaPopustu", method=RequestMethod.GET)
+	public ResponseEntity<List<KartaNaPopustuDTO>> getAllKarteNaPopustu(){
+		
+		List<Karta> karteNaPopustu = kartaService.getKartaByTipKarte(TipKarte.NA_POPUSTU);
+		
+		List<KartaNaPopustuDTO> karteDTO = new ArrayList<KartaNaPopustuDTO>();
+		for (Karta karta : karteNaPopustu) {
+			String naslov = karta.getTerminPredstaveProjekcije().getNaslov();
+			String sala = karta.getTerminPredstaveProjekcije().getSala().getNaziv();
+			String datum = karta.getTerminPredstaveProjekcije().getDatum().toString();
+			String pocetak = karta.getTerminPredstaveProjekcije().getPocetak().toString();
+			String bioskopPozoriste = "";
+			Double popust = (double) ((karta.getCena()*karta.getPopust())/100);
+			Integer novaCena = karta.getCena() - popust.intValue();
+			if(karta.getTerminPredstaveProjekcije().getSala().getBioskop() != null) {
+				bioskopPozoriste = karta.getTerminPredstaveProjekcije().getSala().getBioskop().getNaziv();
+			}
+			else if(karta.getTerminPredstaveProjekcije().getSala().getPozoriste() != null) {
+				bioskopPozoriste = karta.getTerminPredstaveProjekcije().getSala().getPozoriste().getNaziv();
+			}
+			karteDTO.add(new KartaNaPopustuDTO(bioskopPozoriste, naslov, datum, pocetak, sala,
+					karta.getRed(), karta.getKolona(), karta.getCena(), karta.getPopust(), novaCena));
+		}
+		
+		return new ResponseEntity<>(karteDTO, HttpStatus.OK);
 	}
 }

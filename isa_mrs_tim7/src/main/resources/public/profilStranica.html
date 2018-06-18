@@ -75,6 +75,7 @@ th {
                    <li id="prikaziZah"><a data-toggle="tab" href="#menu4" ><i class="glyphicon glyphicon-user"></i> Zahtevi za prijateljstvo</a></li>
                    <li id="bios"><a data-toggle="tab" href="#menu5" ><i class="glyphicon glyphicon"></i> Bioskopi</a></li>
                    <li id="poz"><a data-toggle="tab" href="#menu6" ><i class="glyphicon glyphicon"></i> Pozorista</a></li>
+                   <li id="poz"><a data-toggle="tab" href="#menu7" onclick="dobaviKarteNaPopustu()"><i class="glyphicon glyphicon"></i> Brza rezervacija</a></li>
                 </ul>
             
             </div>
@@ -328,6 +329,50 @@ th {
 			
 				<div id="map1" ></div>	
            
+           </div>
+           
+           <div id="menu7" class="tab-pane fade">
+           		<!-- TAB ZA BRZU REZERVACIJU -->
+           		<div class="row">
+           			<div class="scrollable" style="height:350px; overflow-y:scroll">
+           			<table class="table table-hover" id="tabela_karte_na_popustu">
+						<thead>
+      						<tr>
+        						<th>Bioskop/Pozoriste</th>
+        						<th>Naslov</th>
+        						<th>Datum</th>
+        						<th>Pocetak</th>
+        						<th>Sala</th>
+        						<th>Red</th>
+        						<th>Kolona</th>
+        						<th>Stara cena</th>
+        						<th>Popust</th>
+        						<th>Nova cena</th>
+        						<th></th>
+      						</tr>
+    					</thead>
+    					<tbody id="tabela_karte_na_popustu_sadrzaj">
+      						
+    					</tbody>
+  					</table>
+           		</div>
+           		</div>
+           		<div class="row">
+           			<h4 style="margin-top:50px">Filtriranje karata</h4>
+           		</div>
+           		<div class="row">
+           			<label class="control-label col-sm-2" for="bioskop_pozoriste_filter" style="margin-top:30px">Bioskop/pozoriste:</label>
+    					<div class="col-sm-3">
+      						<input type="text" class="form-control" id="bioskop_pozoriste_filter" placeholder="Bioskop/pozoriste" style="margin-top:25px; float: left">
+    					</div>
+    				<label class="control-label col-sm-1" for="cena_filter" style="margin-top:30px">Do cene:</label>
+    					<div class="col-sm-2">
+      						<input type="text" class="form-control" id="cena_filter" placeholder="cena" style="margin-top:25px; float: left">
+    					</div>
+    					<div class="col-sm-2">
+    						<button class="btn btn-primary" style="margin-top:25px">Filtriraj</button>
+    					</div>
+           		</div>           		
            </div>
             
             

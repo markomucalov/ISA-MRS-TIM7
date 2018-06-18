@@ -478,3 +478,44 @@ var emailP = $(event.target).parent().siblings().first().next().text();
 	
 }
 
+/*funkcije za BRZU REZERVACIJU*/
+function dobaviKarteNaPopustu(){
+	$.get('http://localhost:8080/getAllKarteNaPopustu', function (data) {
+		var response = data;
+		var tabela = document.getElementById("tabela_karte_na_popustu_sadrzaj");
+		$("#tabela_karte_na_popustu").find("tr:not(:first)").remove();;
+		
+		for(var counter in response){
+			var row = tabela.insertRow(counter);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			var cell5 = row.insertCell(4);
+			var cell6 = row.insertCell(5);
+			var cell7 = row.insertCell(6);
+			var cell8 = row.insertCell(7);
+			var cell9 = row.insertCell(8);
+			var cell10 = row.insertCell(9);
+			var cell11 = row.insertCell(10);
+			
+			cell1.innerHTML = response[counter].bioskopPozoriste;
+			cell2.innerHTML = response[counter].naslov;
+			cell3.innerHTML = response[counter].datum;
+			cell4.innerHTML = response[counter].pocetak;
+			cell5.innerHTML = response[counter].sala;
+			cell6.innerHTML = response[counter].red;
+			cell7.innerHTML = response[counter].kolona;
+			cell8.innerHTML = response[counter].staraCena;
+			cell9.innerHTML = response[counter].popust;
+			cell10.innerHTML = response[counter].novaCena;
+			cell11.innerHTML = '<button class="btn btn-primary" onclick="rezervisiKartuNaPopustu()">Rezervisi</button>';
+		}
+	})
+	/*TODO*/
+}
+
+function rezervisiKartuNaPopustu(){
+	
+}
+
