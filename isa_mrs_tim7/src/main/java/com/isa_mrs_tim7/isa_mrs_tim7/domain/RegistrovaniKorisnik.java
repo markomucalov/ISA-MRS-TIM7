@@ -1,13 +1,17 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.domain;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "regKorisnici")
@@ -27,12 +31,27 @@ public class RegistrovaniKorisnik implements Serializable {
 	String email;
 	@Column(nullable = false)
 	String lozinka;
+	
+	@OneToMany(mappedBy="registrovaniKorisnik")
+	@JsonManagedReference
+	private List<Karta> rezervisaneKarte;
+	
 	public RegistrovaniKorisnik(String ime, String prezime, String email, String lozinka) {
 		super();
 		this.ime = ime;
 		this.prezime = prezime;
 		this.email = email;
 		this.lozinka = lozinka;
+	}
+	public RegistrovaniKorisnik(Long id, String ime, String prezime, String email, String lozinka,
+			List<Karta> rezervisaneKarte) {
+		super();
+		this.id = id;
+		this.ime = ime;
+		this.prezime = prezime;
+		this.email = email;
+		this.lozinka = lozinka;
+		this.rezervisaneKarte = rezervisaneKarte;
 	}
 	public RegistrovaniKorisnik() {
 		
@@ -74,5 +93,12 @@ public class RegistrovaniKorisnik implements Serializable {
 	public void setLozinka(String lozinka) {
 		this.lozinka = lozinka;
 	}
+	public List<Karta> getRezervisaneKarte() {
+		return rezervisaneKarte;
+	}
+	public void setRezervisaneKarte(List<Karta> rezervisaneKarte) {
+		this.rezervisaneKarte = rezervisaneKarte;
+	}
 
+	
 }

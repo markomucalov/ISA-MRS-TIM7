@@ -10,6 +10,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.Version;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
@@ -46,8 +47,13 @@ public class Karta implements Serializable{
 	@Column(nullable = false)
 	private TipKarte tipKarte;
 	
-	@Column(nullable = false)
-	private Boolean prodata;
+	@ManyToOne(optional=true)
+	@JoinColumn(name="regKorisnici_id", unique=false)
+	@JsonBackReference
+	private RegistrovaniKorisnik registrovaniKorisnik;
+	
+	@Version
+	private Long version;
 
 	public Karta() {
 		
@@ -109,16 +115,24 @@ public class Karta implements Serializable{
 		this.tipKarte = tipKarte;
 	}
 
-	public Boolean getProdata() {
-		return prodata;
-	}
-
-	public void setProdata(Boolean prodata) {
-		this.prodata = prodata;
-	}
-
 	public static long getSerialversionuid() {
 		return serialVersionUID;
+	}
+
+	public RegistrovaniKorisnik getRegistrovaniKorisnik() {
+		return registrovaniKorisnik;
+	}
+
+	public void setRegistrovaniKorisnik(RegistrovaniKorisnik registrovaniKorisnik) {
+		this.registrovaniKorisnik = registrovaniKorisnik;
+	}
+
+	public Long getVersion() {
+		return version;
+	}
+
+	public void setVersion(Long version) {
+		this.version = version;
 	}
 	
 	

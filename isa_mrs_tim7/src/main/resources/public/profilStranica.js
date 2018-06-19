@@ -512,10 +512,85 @@ function dobaviKarteNaPopustu(){
 			cell11.innerHTML = '<button class="btn btn-primary" onclick="rezervisiKartuNaPopustu()">Rezervisi</button>';
 		}
 	})
-	/*TODO*/
 }
 
 function rezervisiKartuNaPopustu(){
+	
+}
+
+var error_gornja_broj;
+
+function filtrirajKarteNaPopustu(){
+	
+	error_gornja_broj = false;
+	check_gornja_granica();
+	if(error_gornja_broj == true){
+		return;
+	}
+	
+	var bioskopPozoristeKriterijum = $("#bioskop_pozoriste_filter").val();
+	var cenaKriterijum = $("#cena_filter").val();
+	
+	var redovi = document.getElementById("tabela_karte_na_popustu").rows;
+	var counter;
+	for(counter = 0; counter < redovi.length; counter++){
+		if(counter != 0 && counter !="length"){
+			if(bioskopPozoristeKriterijum == "" && cenaKriterijum != ""){
+				if(redovi[counter].cells[9].innerHTML > cenaKriterijum){
+					redovi[counter].style.display = "none";
+				}
+				else{
+					redovi[counter].style.display = "";
+				}
+			}
+			else if(bioskopPozoristeKriterijum != "" && cenaKriterijum == ""){
+				if(redovi[counter].cells[0].innerHTML.toUpperCase().startsWith(bioskopPozoristeKriterijum.toUpperCase())){
+					redovi[counter].style.display = "";
+				}
+				else{
+					redovi[counter].style.display = "none";
+				}
+			}
+			else if(bioskopPozoristeKriterijum == "" && cenaKriterijum == ""){
+				redovi[counter].style.display = "";
+			}
+			else if(bioskopPozoristeKriterijum != "" && cenaKriterijum != ""){
+				if((redovi[counter].cells[0].innerHTML.toUpperCase().startsWith(bioskopPozoristeKriterijum.toUpperCase())) && redovi[counter].cells[9].innerHTML <= cenaKriterijum){
+					redovi[counter].style.display = "";
+				}
+				else{
+					redovi[counter].style.display = "none";
+				}
+			}
+			
+		}		
+	}
+}
+
+function resetujFilter(){
+	var bioskopPozoristeKriterijum = $("#bioskop_pozoriste_filter").val();
+	var cenaKriterijum = $("#cena_filter").val();
+	
+	var redovi = document.getElementById("tabela_karte_na_popustu").rows;
+	var counter;
+	for(counter = 0; counter < redovi.length; counter++){
+		if(counter != 0 && counter !="length"){
+			redovi[counter].style.display = "";
+		}	
+	}
+	$(".error_gornja_granica").text("");
+}
+
+function check_gornja_granica() {
+	
+	var pattern = new RegExp(/^\d+$/);
+		
+	if(pattern.test($("#cena_filter").val())) {
+		$(".error_gornja_granica").text("");
+	} else {
+		$(".error_gornja_granica").text("mora biti uneta brojevna vrednost");
+		error_gornja_broj = true;
+	}
 	
 }
 

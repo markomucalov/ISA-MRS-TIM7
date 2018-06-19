@@ -3,6 +3,7 @@ package com.isa_mrs_tim7.isa_mrs_tim7.controller;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -398,7 +399,7 @@ public class AdministratorPozoristaBioskopaController {
 					Karta karta = new Karta();
 					karta.setKolona(sediste.getKolona());
 					karta.setRed(sediste.getRed());
-					karta.setProdata(false);
+					karta.setRegistrovaniKorisnik(null);;
 					karta.setTerminPredstaveProjekcije(noviTermin);
 					if(sediste.getTipSedista() == TipSedista.OBICNO) {
 						karta.setCena(terminPredProDTO.getCenaObicne());
@@ -434,6 +435,14 @@ public class AdministratorPozoristaBioskopaController {
 	public ResponseEntity<List<KartaNaPopustuDTO>> getAllKarteNaPopustu(){
 		
 		List<Karta> karteNaPopustu = kartaService.getKartaByTipKarte(TipKarte.NA_POPUSTU);
+		
+		Iterator<Karta> it = karteNaPopustu.iterator();
+		while (it.hasNext()) {
+			Karta karta = it.next();
+		    if (karta.getRegistrovaniKorisnik() != null) {
+		        it.remove();
+		    }
+		}
 		
 		List<KartaNaPopustuDTO> karteDTO = new ArrayList<KartaNaPopustuDTO>();
 		for (Karta karta : karteNaPopustu) {
