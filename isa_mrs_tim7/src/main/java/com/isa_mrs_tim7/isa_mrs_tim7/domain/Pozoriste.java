@@ -47,6 +47,10 @@ public class Pozoriste implements Serializable {
 	@OneToMany(mappedBy="pozoriste")
 	@JsonManagedReference
 	private List<Sala> sale;
+	
+	@OneToMany(mappedBy="pozoriste")
+	@JsonManagedReference
+	private List<Ocena> ocene;
     
     public Pozoriste() {
     	
@@ -117,6 +121,14 @@ public class Pozoriste implements Serializable {
 
 	public void setSale(List<Sala> sale) {
 		this.sale = sale;
+	}
+
+	public List<Ocena> getOcene() {
+		return ocene;
+	}
+
+	public void setOcene(List<Ocena> ocene) {
+		this.ocene = ocene;
 	}
 
 	

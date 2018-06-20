@@ -634,3 +634,157 @@ function check_gornja_granica() {
 	
 }
 
+/*funkcije OCENJIVANJE*/
+function dobaviIstorijuPoseta(){
+	var emailKorisnika = document.getElementById("email").innerText;
+	var imePrezime = document.getElementById("ime").innerText;
+	var ime = imePrezime.split(" ")[0];
+	var prezime = imePrezime.split(" ")[1];
+	$.get('http://localhost:8080/'+emailKorisnika+'/'+ime+'/'+prezime+'/getAllIstorijaPoseta', function (data) {
+		var response = data;
+		var tabela = document.getElementById("istorija_poseta_sadrzaj");
+		$("#istorija_poseta").find("tr:not(:first)").remove();;
+		
+		for(var counter in response){
+			var row = tabela.insertRow(counter);
+			row.addEventListener("click", preuzmiSelektovaniRed);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			var cell5 = row.insertCell(4);
+			var cell6 = row.insertCell(5);
+			var cell7 = row.insertCell(6);
+			
+			cell1.innerHTML = response[counter].bioskopPozoriste;
+			cell2.innerHTML = response[counter].naslov;
+			cell3.innerHTML = response[counter].datum;
+			cell4.innerHTML = response[counter].kolona;
+			cell5.innerHTML = response[counter].red;
+			prikaziOcenu(cell6, cell7, response[counter].ocenaAmbijent, response[counter].ocenaPredPro);
+		}
+	})
+}
+
+function prikaziOcenu(cell6, cell7, ocenaAmbijenta, ocenaPredstaveProjekcije){
+	if(ocenaAmbijenta < 10){
+		cell6.innerHTML = '<span class="rating-static rating-5"></span>';
+	}
+	else if(ocenaAmbijenta >= 10 && ocenaAmbijenta < 20){
+		cell6.innerHTML = '<span class="rating-static rating-10"></span>';
+	}
+	else if(ocenaAmbijenta >= 20 && ocenaAmbijenta < 30){
+		cell6.innerHTML = '<span class="rating-static rating-15"></span>';
+	}
+	else if(ocenaAmbijenta >= 30 && ocenaAmbijenta < 40){
+		cell6.innerHTML = '<span class="rating-static rating-20"></span>';
+	}
+	else if(ocenaAmbijenta >= 40 && ocenaAmbijenta < 50){
+		cell6.innerHTML = '<span class="rating-static rating-25"></span>';
+	}
+	else if(ocenaAmbijenta >= 50 && ocenaAmbijenta < 60){
+		cell6.innerHTML = '<span class="rating-static rating-30"></span>';
+	}
+	else if(ocenaAmbijenta >= 60 && ocenaAmbijenta < 70){
+		cell6.innerHTML = '<span class="rating-static rating-35"></span>';
+	}
+	else if(ocenaAmbijenta >= 70 && ocenaAmbijenta < 80){
+		cell6.innerHTML = '<span class="rating-static rating-40"></span>';
+	}
+	else if(ocenaAmbijenta >= 80 && ocenaAmbijenta < 90){
+		cell6.innerHTML = '<span class="rating-static rating-45"></span>';
+	}
+	else if(ocenaAmbijenta >= 90){
+		cell6.innerHTML = '<span class="rating-static rating-50"></span>';
+	}
+	
+	if(ocenaPredstaveProjekcije < 10){
+		cell7.innerHTML = '<span class="rating-static rating-5"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 10 && ocenaPredstaveProjekcije < 20){
+		cell7.innerHTML = '<span class="rating-static rating-10"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 20 && ocenaPredstaveProjekcije < 30){
+		cell7.innerHTML = '<span class="rating-static rating-15"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 30 && ocenaPredstaveProjekcije < 40){
+		cell7.innerHTML = '<span class="rating-static rating-20"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 40 && ocenaPredstaveProjekcije < 50){
+		cell7.innerHTML = '<span class="rating-static rating-25"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 50 && ocenaPredstaveProjekcije < 60){
+		cell7.innerHTML = '<span class="rating-static rating-30"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 60 && ocenaPredstaveProjekcije < 70){
+		cell7.innerHTML = '<span class="rating-static rating-35"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 70 && ocenaPredstaveProjekcije < 80){
+		cell7.innerHTML = '<span class="rating-static rating-40"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 80 && ocenaPredstaveProjekcije < 90){
+		cell7.innerHTML = '<span class="rating-static rating-45"></span>';
+	}
+	else if(ocenaPredstaveProjekcije >= 90){
+		cell7.innerHTML = '<span class="rating-static rating-50"></span>';
+	}
+}
+
+/*$(document).ready(function() {
+    var table = $('#istorija_poseta');
+     
+    $('#istorija_poseta tbody').on('click', 'tr', function () {
+        var data = table.row( this ).data();
+        alert( 'You clicked on '+data+'\'s row' );
+    } );
+} );
+
+$("#istorija_poseta_sadrzaj tr").click(function() {
+    var selected = $(this).hasClass("highlight");
+    $("#istorija_poseta_sadrzaj tr").removeClass("highlight");
+    if(!selected)
+            $(this).addClass("highlight");
+});*/
+var red
+function preuzmiSelektovaniRed(){
+	red = $(event.target).parent();
+	$("#istorija_poseta_sadrzaj tr").removeClass("highlighted");
+	//$(event.target).parent().siblings().classList.remove("highlight");
+	red.addClass("highlighted");
+	$("#oceniDugme").prop('disabled', false);
+}
+
+function oceniAmbijentPredstavuProjekciju(){
+	var ocenaAmbijent = $("#ambijentOcena").find(":selected").text();
+	ocenaAmbijent = parseFloat(ocenaAmbijent)*10*2-1;
+	var ocenaPredstavaProjekcija = $("#preProOcena").find(":selected").text();
+	ocenaPredstavaProjekcija = parseFloat(ocenaPredstavaProjekcija)*10*2-1;
+	var pretposlednja = red.children()[5];
+	var poslednja = red.children()[6];
+	prikaziOcenu(pretposlednja, poslednja, ocenaAmbijent, ocenaPredstavaProjekcija);
+	
+	var emailKorisnika = document.getElementById("email").innerText;
+	var imePrezime = document.getElementById("ime").innerText;
+	var ime = imePrezime.split(" ")[0];
+	var prezime = imePrezime.split(" ")[1];
+	
+	var ocenaDTO={
+			"bioskopPozoriste": red.children()[0].innerText,
+		    "naslov": red.children()[1].innerText,
+		    "datum": red.children()[2].innerText,
+		    "kolona": red.children()[3].innerText,
+		    "red": red.children()[4].innerText,
+		    "ocenaAmbijent": ocenaAmbijent,
+	        "ocenaPredPro": ocenaPredstavaProjekcija 
+		}
+	$.ajax({
+	    url: 'http://localhost:8080/'+emailKorisnika+'/'+ime+'/'+prezime+'/izvrsiOcenjivanje',
+	    type: 'POST',
+	    data: JSON.stringify(ocenaDTO),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    statusCode: {
+	    	200: function() {alert('uspesno ste ocenili');}
+	    }
+	});
+}

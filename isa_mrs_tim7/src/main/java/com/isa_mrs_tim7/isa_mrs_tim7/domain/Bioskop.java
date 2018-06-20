@@ -46,6 +46,10 @@ public class Bioskop implements Serializable{
 	@OneToMany(mappedBy="bioskop")
 	@JsonManagedReference
 	private List<Sala> sale;
+	
+	@OneToMany(mappedBy="bioskop")
+	@JsonManagedReference
+	private List<Ocena> ocene;
 
 	public Bioskop() {
 		
@@ -116,6 +120,14 @@ public class Bioskop implements Serializable{
 
 	public void setSale(List<Sala> sale) {
 		this.sale = sale;
+	}
+
+	public List<Ocena> getOcene() {
+		return ocene;
+	}
+
+	public void setOcene(List<Ocena> ocene) {
+		this.ocene = ocene;
 	}
 	
 	

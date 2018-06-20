@@ -12,9 +12,11 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
 @Table(name = "film")
@@ -49,9 +51,6 @@ public class Film implements Serializable{
 	
 	@Column(nullable = false)
 	private String opis;
-	
-	@ElementCollection
-	private List<Integer> ocene;
 
 	@ManyToOne
 	@JoinColumn(name="bioskop_id", nullable=false, unique=false)
@@ -60,6 +59,10 @@ public class Film implements Serializable{
 	
 	@Column(nullable = false)
 	private Integer cena;
+	
+	@OneToMany(mappedBy="film")
+	@JsonManagedReference
+	private List<Ocena> ocene;
 
 	public Film() {
 
@@ -129,14 +132,6 @@ public class Film implements Serializable{
 		this.opis = opis;
 	}
 
-	public List<Integer> getOcene() {
-		return ocene;
-	}
-
-	public void setOcene(List<Integer> ocene) {
-		this.ocene = ocene;
-	}
-
 	public Bioskop getBioskop() {
 		return bioskop;
 	}
@@ -151,6 +146,18 @@ public class Film implements Serializable{
 
 	public void setCena(Integer cena) {
 		this.cena = cena;
+	}
+
+	public List<Ocena> getOcene() {
+		return ocene;
+	}
+
+	public void setOcene(List<Ocena> ocene) {
+		this.ocene = ocene;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
 	
 	

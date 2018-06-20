@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Adresa;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Ocena;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.AdresaDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.BioskopDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.FilmDTO;
@@ -97,7 +98,7 @@ public class BioskopiController {
 		film.setOpis(filmDTO.getOpis());
 		film.setBioskop(bioskop);
 		
-		List<Integer> ocene = new ArrayList<Integer>();
+		List<Ocena> ocene = new ArrayList<Ocena>();
 		
 		film.setOcene(ocene);
 		

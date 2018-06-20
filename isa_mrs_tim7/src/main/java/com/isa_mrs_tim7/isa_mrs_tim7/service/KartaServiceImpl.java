@@ -50,6 +50,12 @@ public class KartaServiceImpl implements KartaService {
 		kartaToUpdate.setRegistrovaniKorisnik(regKorisnik);
 		save(kartaToUpdate);
 	}
+
+	@Override
+	public List<Karta> getKartaByRegistrovaniKorisnik(RegistrovaniKorisnik regKorisnik) {
+		return kartaRep.getKartaByRegistrovaniKorisnik(regKorisnik);
+	}
+	
 	
 	
 }

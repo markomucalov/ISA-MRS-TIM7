@@ -23,7 +23,9 @@
     transition: 0.5s;
     }
 
-
+.highlighted {
+    background-color: rgba(255, 0, 0, 0.3);
+}
 
 th {
     cursor: pointer;
@@ -76,6 +78,7 @@ th {
                    <li id="bios"><a data-toggle="tab" href="#menu5" ><i class="glyphicon glyphicon"></i> Bioskopi</a></li>
                    <li id="poz"><a data-toggle="tab" href="#menu6" ><i class="glyphicon glyphicon"></i> Pozorista</a></li>
                    <li id="poz"><a data-toggle="tab" href="#menu7" onclick="dobaviKarteNaPopustu()"><i class="glyphicon glyphicon"></i> Brza rezervacija</a></li>
+                   <li id="poz"><a data-toggle="tab" href="#menu8" onclick="dobaviIstorijuPoseta()"><i class="glyphicon glyphicon"></i> Istorija poseta</a></li>
                 </ul>
             
             </div>
@@ -385,7 +388,62 @@ th {
            		           		
            </div>
             
-            
+           <div id="menu8" class="tab-pane fade">
+           		<div class="row">
+           			<div class="scrollable" style="height:250px; overflow-y:scroll">
+           			<table class="table table-hover" id="istorija_poseta">
+						<thead>
+      						<tr>
+        						<th>Bioskop/Pozoriste</th>
+        						<th>Naslov</th>
+        						<th>Datum</th>
+        						<th>Kolona</th>
+        						<th>Red</th>
+        						<th>Ocena ambijenta</th>
+        						<th>Ocena projekcije/predstave</th>
+      						</tr>
+    					</thead>
+    					<tbody id="istorija_poseta_sadrzaj">
+      						
+    					</tbody>
+  					</table>
+           			</div>
+           		</div>
+           		<div class="row">
+           			<div class="col-sm-2"></div>
+           			<label class="control-label col-sm-1" for="ambijentOcena" style="margin-top:25px">Ambijent:</label>
+    				<div class="col-sm-2">
+      					<select class="form-control" id="ambijentOcena" style="margin-top:20px">
+      						<option value="1">1</option>
+      						<option value="1">1.5</option>
+      						<option value="2">2</option>
+      						<option value="1">2.5</option>
+      						<option value="3">3</option>
+      						<option value="1">3.5</option>
+      						<option value="4">4</option>
+      						<option value="1">4.5</option>
+      						<option value="5">5</option>			
+ 						</select>
+    				</div>
+    				<label class="control-label col-sm-2" for="preProOcena" style="margin-top:25px">Predstava/projekcija:</label>
+    				<div class="col-sm-2">
+      					<select class="form-control" id="preProOcena" style="margin-top:20px">
+      						<option value="1">1</option>
+      						<option value="1">1.5</option>
+      						<option value="2">2</option>
+      						<option value="1">2.5</option>
+      						<option value="3">3</option>
+      						<option value="1">3.5</option>
+      						<option value="4">4</option>
+      						<option value="1">4.5</option>
+      						<option value="5">5</option>			
+ 						</select>
+    				</div>
+    				<div class="col-sm-1">
+    					<button id="oceniDugme" class="btn btn-primary" style="margin-top:20px" onclick="oceniAmbijentPredstavuProjekciju()" disabled>Oceni</button>
+    				</div>
+           		</div>
+           </div>
             
             
             

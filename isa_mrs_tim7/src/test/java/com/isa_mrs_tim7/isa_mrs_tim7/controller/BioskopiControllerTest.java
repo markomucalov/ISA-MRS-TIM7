@@ -41,6 +41,7 @@ import com.isa_mrs_tim7.isa_mrs_tim7.constants.FilmConstants;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Adresa;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Ocena;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.BioskopService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.FilmService;
 
@@ -122,7 +123,7 @@ public class BioskopiControllerTest {
 		film.setImeReditelja(FilmConstants.IME_REDITELJA);
 		film.setNaizv(FilmConstants.NAZIV);
 		
-		List<Integer> ocene = new ArrayList<Integer>();
+		List<Ocena> ocene = new ArrayList<Ocena>();
 		film.setOcene(ocene);
 		film.setOpis(FilmConstants.OPIS);
 		film.setSlika(FilmConstants.SLIKA);

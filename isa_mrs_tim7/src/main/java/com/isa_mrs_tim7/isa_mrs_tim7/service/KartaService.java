@@ -18,4 +18,6 @@ public interface KartaService {
 	Karta findById(long id);
 	
 	void update(Karta karta, RegistrovaniKorisnik regKorisnik) throws Exception;
+	
+	List<Karta> getKartaByRegistrovaniKorisnik(RegistrovaniKorisnik regKorisnik);
 }

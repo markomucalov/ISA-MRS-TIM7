@@ -19,7 +19,9 @@ import com.isa_mrs_tim7.isa_mrs_tim7.domain.AdministratorPozoristaBioskopa;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Karta;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Ocena;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Pozoriste;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.Predstava;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.RegistrovaniKorisnik;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sala;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sediste;
@@ -32,11 +34,14 @@ import com.isa_mrs_tim7.isa_mrs_tim7.dto.KonfiguracijaDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SaleDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SedisteDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.TerminPredstaveProjekcijeDTO;
+import com.isa_mrs_tim7.isa_mrs_tim7.dto.TerminiZaOcenjivanjeDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.AdministratorPozoristaBioskopaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.BioskopService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.FilmService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.KartaService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.OcenaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.PozoristeService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.PredstavaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.SalaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.SedisteService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.ServisLogin;
@@ -67,11 +72,16 @@ public class AdministratorPozoristaBioskopaController {
 	FilmService filmService;
 	
 	@Autowired
+	PredstavaService predstavaService;
+	
+	@Autowired
 	KartaService kartaService;
 	
 	@Autowired
 	ServisLogin loginService;
 
+	@Autowired
+	OcenaService ocenaService;
 	
 	@RequestMapping(value="/{adminIme}/bioskopPozoristeAdmin", method=RequestMethod.GET)
 	public ResponseEntity<AdministratorPozoristaBioskopa> getBioskop(@PathVariable String adminIme){
@@ -504,5 +514,95 @@ public class AdministratorPozoristaBioskopaController {
 			return new ResponseEntity<String>("Uspesna rezervacija", HttpStatus.OK);
 		}
 		return new ResponseEntity<String>("Greska rezervacije",HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{emailKorisnika}/{imeKorisnika}/{prezimeKorisnika}/getAllIstorijaPoseta", method=RequestMethod.GET)
+	public ResponseEntity<List<TerminiZaOcenjivanjeDTO>> getAllIstorijaPoseta(@PathVariable String emailKorisnika, @PathVariable String imeKorisnika, @PathVariable String prezimeKorisnika){
+		
+		RegistrovaniKorisnik regKor = loginService.findByEmailAndImeAndPrezime(emailKorisnika, imeKorisnika, prezimeKorisnika);
+		
+		List<Karta> sveKarteKorisnika = kartaService.getKartaByRegistrovaniKorisnik(regKor);
+		
+		List<TerminiZaOcenjivanjeDTO> terminZaOcen = new ArrayList<TerminiZaOcenjivanjeDTO>();
+		
+		Date danasnjiDatum = new Date(System.currentTimeMillis());
+		
+		for (Karta karta : sveKarteKorisnika) {
+			if(karta.getTerminPredstaveProjekcije().getDatum().compareTo(danasnjiDatum)<0) {
+				String naslov = karta.getTerminPredstaveProjekcije().getNaslov();
+				String datum = karta.getTerminPredstaveProjekcije().getDatum().toString();
+				Integer red = karta.getRed();
+				Integer kolona = karta.getKolona();
+				String bioskopPozoriste = "";
+				Integer ocenaAmbijent = 0;
+				Integer ocenaPredPro = 0;
+				
+				if(karta.getTerminPredstaveProjekcije().getSala().getBioskop() != null) {
+					bioskopPozoriste = karta.getTerminPredstaveProjekcije().getSala().getBioskop().getNaziv();
+					Bioskop bioskop = karta.getTerminPredstaveProjekcije().getSala().getBioskop();
+					Date datumProj = karta.getTerminPredstaveProjekcije().getDatum();
+					Film film = filmService.findFilmByNaizvAndBioskop(naslov, bioskop);
+					Ocena ocena = ocenaService.findByBioskopAndFilmAndDatumAndRedAndKolona(bioskop, film, datumProj, red, kolona);
+					if(ocena != null) {
+						ocenaAmbijent = ocena.getOcenaAmbijent();
+						ocenaPredPro = ocena.getOcenaPredstavaProjekcija();
+					}
+				}
+				else if(karta.getTerminPredstaveProjekcije().getSala().getPozoriste() != null) {
+					bioskopPozoriste = karta.getTerminPredstaveProjekcije().getSala().getPozoriste().getNaziv();
+					Pozoriste pozoriste = karta.getTerminPredstaveProjekcije().getSala().getPozoriste();
+					Date datumPred = karta.getTerminPredstaveProjekcije().getDatum();
+					Predstava predstava = predstavaService.findPredstavaByNaizvAndPozoriste(naslov, pozoriste);
+					Ocena ocena = ocenaService.findByPozoristeAndPredstavaAndDatumAndRedAndKolona(pozoriste, predstava, datumPred, red, kolona);
+					if(ocena != null) {
+						ocenaAmbijent = ocena.getOcenaAmbijent();
+						ocenaPredPro = ocena.getOcenaPredstavaProjekcija();
+					}
+				}
+				terminZaOcen.add(new TerminiZaOcenjivanjeDTO(bioskopPozoriste, naslov, datum, kolona, red, ocenaAmbijent, ocenaPredPro));
+			}		
+		}
+		
+		return new ResponseEntity<List<TerminiZaOcenjivanjeDTO>>(terminZaOcen, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{emailKorisnika}/{imeKorisnika}/{prezimeKorisnika}/izvrsiOcenjivanje", method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> rezervisiKartuNaPopustu(@PathVariable String emailKorisnika, @PathVariable String imeKorisnika, @PathVariable String prezimeKorisnika,@RequestBody TerminiZaOcenjivanjeDTO terminiZaOcenjivanjeDTO){
+		
+		RegistrovaniKorisnik regKor = loginService.findByEmailAndImeAndPrezime(emailKorisnika, imeKorisnika, prezimeKorisnika);
+		Bioskop bio = bioskopService.findByNaziv(terminiZaOcenjivanjeDTO.getBioskopPozoriste());
+		Pozoriste poz;
+		Integer red = terminiZaOcenjivanjeDTO.getRed();
+		Integer kolona = terminiZaOcenjivanjeDTO.getKolona();
+		Ocena ocena;
+		
+		if(bio == null) {
+			poz = pozoristeService.findByNaziv(terminiZaOcenjivanjeDTO.getBioskopPozoriste());
+			Predstava pred = predstavaService.findPredstavaByNaizvAndPozoriste(terminiZaOcenjivanjeDTO.getNaslov(), poz);
+			Date datum = Date.valueOf(terminiZaOcenjivanjeDTO.getDatum());
+			ocena = ocenaService.findByPozoristeAndPredstavaAndDatumAndRedAndKolona(poz, pred, datum, red, kolona);
+			if(ocena == null) {
+				ocena = new Ocena(bio, poz, null, pred,	regKor, datum, red, kolona, terminiZaOcenjivanjeDTO.getOcenaAmbijent(),	terminiZaOcenjivanjeDTO.getOcenaPredPro());
+			}
+			else {
+				ocena.setOcenaAmbijent(terminiZaOcenjivanjeDTO.getOcenaAmbijent());
+				ocena.setOcenaPredstavaProjekcija(terminiZaOcenjivanjeDTO.getOcenaPredPro());
+			}
+		}
+		else {
+			Film film = filmService.findFilmByNaizvAndBioskop(terminiZaOcenjivanjeDTO.getNaslov(), bio);
+			Date datum = Date.valueOf(terminiZaOcenjivanjeDTO.getDatum());
+			ocena = ocenaService.findByBioskopAndFilmAndDatumAndRedAndKolona(bio, film, datum, red, kolona);
+			if(ocena == null) {
+				ocena = new Ocena(bio, null, film, null, regKor, datum, red, kolona, terminiZaOcenjivanjeDTO.getOcenaAmbijent(), terminiZaOcenjivanjeDTO.getOcenaPredPro());
+			}
+			else {
+				ocena.setOcenaAmbijent(terminiZaOcenjivanjeDTO.getOcenaAmbijent());
+				ocena.setOcenaPredstavaProjekcija(terminiZaOcenjivanjeDTO.getOcenaPredPro());
+			}
+		}
+		ocenaService.save(ocena);
+		return new ResponseEntity<String>(HttpStatus.OK);
+		
 	}
 }
