@@ -1,6 +1,7 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.service;
 
 import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,4 +26,11 @@ public class TerminPredstaveProjekcijeServiceImpl implements TerminPredstaveProj
 	public void save(TerminPredstaveProjekcije termin) {
 		terminRep.save(termin);		
 	}
+
+	@Override
+	public TerminPredstaveProjekcije findBySalaAndDatumAndPocetak(Sala sala, Date datum, Time pocetak) {
+		return terminRep.findBySalaAndDatumAndPocetak(sala, datum, pocetak);
+	}
+	
+	
 }

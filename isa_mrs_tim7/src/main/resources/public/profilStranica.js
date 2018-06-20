@@ -515,7 +515,47 @@ function dobaviKarteNaPopustu(){
 }
 
 function rezervisiKartuNaPopustu(){
+	var selektovanaKarta = $(event.target).parent().parent().children();
+	var bioskopPozoriste = selektovanaKarta[0].innerText;
+	var naslov = selektovanaKarta[1].innerText;
+	var datum = selektovanaKarta[2].innerText;
+	var pocetak = selektovanaKarta[3].innerText;
+	var sala = selektovanaKarta[4].innerText;
+	var red = selektovanaKarta[5].innerText;
+	var kolona = selektovanaKarta[6].innerText;
+	var staraCena = selektovanaKarta[7].innerText;
+	var popust = selektovanaKarta[8].innerText;
+	var novaCena = selektovanaKarta[9].innerText;
+	selektovanaKarta[10].disabled = true;
+	selektovanaKarta[10].innerText = "rezervisana";
 	
+	var imePrezime = document.getElementById("ime").innerText;
+	var ime = imePrezime.split(" ")[0];
+	var prezime = imePrezime.split(" ")[1];
+	var mail = document.getElementById("email").innerText;
+	var kartaDTO={
+			"bioskopPozoriste": bioskopPozoriste,
+		    "naslov": naslov,
+		    "datum": datum,
+		    "pocetak": pocetak,
+		    "sala": sala,
+		    "red": red,
+		    "kolona": kolona,
+		    "staraCena": staraCena,
+		    "popust": popust,
+		    "novaCena": novaCena 
+		}
+	$.ajax({
+	    url: 'http://localhost:8080/'+mail+'/'+ime+'/'+prezime+'/rezervisiKartuNaPopustu',
+	    type: 'POST',
+	    data: JSON.stringify(kartaDTO),
+	    contentType: "application/json; charset=utf-8",
+	    dataType: "json",
+	    statusCode: {
+	    	200: function() {alert('uspesno ste rezervisali kartu za projekciju/predstavu: '+naslov);},
+	    	418: function() {alert('Kartu je u medjuvremenu neko drugi rezervisao');}
+	    }
+	});
 }
 
 var error_gornja_broj;

@@ -20,6 +20,7 @@ public interface ServisLogin {
 	void sendNotificaitionSync (RegistrovaniKorisnik reg) throws MailException, InterruptedException;
 	RegistrovaniKorisnik provjera (RegistrovaniKorisnik reg);
 	Page<RegistrovaniKorisnik> dodajSve(Pageable page);
+	RegistrovaniKorisnik findByEmailAndImeAndPrezime(String email, String ime, String prezime);
 	
 	
 	/*private List<RegistrovaniKorisnik> users;

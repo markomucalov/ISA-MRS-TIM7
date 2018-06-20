@@ -118,6 +118,10 @@ public class ServisLoginImpl implements ServisLogin {
 		// TODO Auto-generated method stub
 		return registrovaniKorisnikRep.findAll(page);
 	}
+	@Override
+	public RegistrovaniKorisnik findByEmailAndImeAndPrezime(String email, String ime, String prezime) {
+		return registrovaniKorisnikRep.findByEmailAndImeAndPrezime(email, ime, prezime);
+	}
 	
 
 }

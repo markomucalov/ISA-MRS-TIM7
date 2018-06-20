@@ -28,6 +28,7 @@ public interface RegistrovaniKorisnikRep extends Repository<RegistrovaniKorisnik
 	RegistrovaniKorisnik save(RegistrovaniKorisnik reg);
 	RegistrovaniKorisnik delete(RegistrovaniKorisnik reg);
 	RegistrovaniKorisnik findById(String id);
+	RegistrovaniKorisnik findByEmailAndImeAndPrezime(String email, String ime, String prezime);
 	
 	
 }

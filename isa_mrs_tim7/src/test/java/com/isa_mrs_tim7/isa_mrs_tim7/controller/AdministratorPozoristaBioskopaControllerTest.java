@@ -33,6 +33,7 @@ import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sala;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sediste;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.TipSedista;
+import com.isa_mrs_tim7.isa_mrs_tim7.dto.KartaNaPopustuDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.KonfiguracijaDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SedisteDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.TerminPredstaveProjekcijeDTO;
@@ -163,5 +164,26 @@ public class AdministratorPozoristaBioskopaControllerTest {
 		
 		String json = TestUtil.json(terminDTO);
 		this.mockMvc.perform(post("/jovaperic/sala3/dodajTerminPrPro").contentType(contentType).content(json)).andExpect(status().isOk());
+	}
+	
+	@Test
+	public void testGetAllKarteNaPopustu() throws Exception{
+		this.mockMvc.perform(get("/getAllKarteNaPopustu")).andExpect(status().isOk())
+		.andExpect(jsonPath("$[0].bioskopPozoriste").value("CineStar Zrenjanin"))
+		.andExpect(jsonPath("$[0].naslov").value("Ex machina"))
+		.andExpect(jsonPath("$[0].datum").value("2018-06-16"))
+		.andExpect(jsonPath("$[0].red").value(3))
+		.andExpect(jsonPath("$[0].kolona").value(4));
+	}
+	
+	@Test
+	@Transactional
+	@Rollback(true)
+	public void testRezervisiKartuNaPopustu() throws Exception{
+		
+		KartaNaPopustuDTO kartaDTO= new KartaNaPopustuDTO("CineStar Zrenjanin", "Ex machina", "2018-06-16", "19:00:00", "sala1", 3, 5, 250, 10, 225);
+		
+		String json = TestUtil.json(kartaDTO);
+		this.mockMvc.perform(post("/jelenapejicic2008@hotmail.com/Jelena/Pejicic/rezervisiKartuNaPopustu").contentType(contentType).content(json)).andExpect(status().isOk());
 	}
 }

@@ -20,6 +20,7 @@ import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Karta;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Pozoriste;
+import com.isa_mrs_tim7.isa_mrs_tim7.domain.RegistrovaniKorisnik;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sala;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Sediste;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.TerminPredstaveProjekcije;
@@ -38,6 +39,7 @@ import com.isa_mrs_tim7.isa_mrs_tim7.service.KartaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.PozoristeService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.SalaService;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.SedisteService;
+import com.isa_mrs_tim7.isa_mrs_tim7.service.ServisLogin;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.TerminPredstaveProjekcijeService;
 
 @RestController
@@ -66,6 +68,9 @@ public class AdministratorPozoristaBioskopaController {
 	
 	@Autowired
 	KartaService kartaService;
+	
+	@Autowired
+	ServisLogin loginService;
 
 	
 	@RequestMapping(value="/{adminIme}/bioskopPozoristeAdmin", method=RequestMethod.GET)
@@ -464,5 +469,40 @@ public class AdministratorPozoristaBioskopaController {
 		}
 		
 		return new ResponseEntity<>(karteDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/{emailKorisnika}/{imeKorisnika}/{prezimeKorisnika}/rezervisiKartuNaPopustu", method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> rezervisiKartuNaPopustu(@PathVariable String emailKorisnika, @PathVariable String imeKorisnika, @PathVariable String prezimeKorisnika,@RequestBody KartaNaPopustuDTO kartaNaPopustuDTO){
+		
+		Bioskop bio = bioskopService.findByNaziv(kartaNaPopustuDTO.getBioskopPozoriste());
+		
+		Pozoriste poz = pozoristeService.findByNaziv(kartaNaPopustuDTO.getBioskopPozoriste());
+		
+		if(bio != null) {
+			Sala sala = salaService.findByNazivAndBioskop(kartaNaPopustuDTO.getSala(), bio);
+			TerminPredstaveProjekcije terminProj = terminService.findBySalaAndDatumAndPocetak(sala, Date.valueOf(kartaNaPopustuDTO.getDatum()), Time.valueOf(kartaNaPopustuDTO.getPocetak()));
+			Karta karta = kartaService.findByRedAndKolonaAndTerminPredstaveProjekcije(kartaNaPopustuDTO.getRed(), kartaNaPopustuDTO.getKolona(), terminProj);
+			RegistrovaniKorisnik regKor = loginService.findByEmailAndImeAndPrezime(emailKorisnika, imeKorisnika, prezimeKorisnika);
+			try {
+				kartaService.update(karta, regKor);
+			}catch(Exception e) {
+				return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+			}
+			return new ResponseEntity<String>("Uspesna rezervacija", HttpStatus.OK);
+		}
+		
+		else if(poz != null) {
+			Sala sala = salaService.findByNazivAndPozoriste(kartaNaPopustuDTO.getSala(), poz);
+			TerminPredstaveProjekcije terminProj = terminService.findBySalaAndDatumAndPocetak(sala, Date.valueOf(kartaNaPopustuDTO.getDatum()), Time.valueOf(kartaNaPopustuDTO.getPocetak()));
+			Karta karta = kartaService.findByRedAndKolonaAndTerminPredstaveProjekcije(kartaNaPopustuDTO.getRed(), kartaNaPopustuDTO.getKolona(), terminProj);
+			RegistrovaniKorisnik regKor = loginService.findByEmailAndImeAndPrezime(emailKorisnika, imeKorisnika, prezimeKorisnika);
+			try {
+				kartaService.update(karta, regKor);
+			}catch(Exception e) {
+				return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+			}
+			return new ResponseEntity<String>("Uspesna rezervacija", HttpStatus.OK);
+		}
+		return new ResponseEntity<String>("Greska rezervacije",HttpStatus.OK);
 	}
 }

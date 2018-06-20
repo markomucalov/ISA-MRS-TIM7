@@ -541,6 +541,7 @@ function ucitajAdminPozBio(){
 
 
 	$("#adminPB").load("pozoristeBioskopAdmin.html");
+	$("#pocetna").hide();
 	$("#adminPB").show();
 	
 }
