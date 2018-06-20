@@ -567,7 +567,7 @@ public class AdministratorPozoristaBioskopaController {
 	}
 	
 	@RequestMapping(value = "/{emailKorisnika}/{imeKorisnika}/{prezimeKorisnika}/izvrsiOcenjivanje", method=RequestMethod.POST, consumes="application/json")
-	public ResponseEntity<String> rezervisiKartuNaPopustu(@PathVariable String emailKorisnika, @PathVariable String imeKorisnika, @PathVariable String prezimeKorisnika,@RequestBody TerminiZaOcenjivanjeDTO terminiZaOcenjivanjeDTO){
+	public ResponseEntity<String> izvrsiOcenjivanje(@PathVariable String emailKorisnika, @PathVariable String imeKorisnika, @PathVariable String prezimeKorisnika,@RequestBody TerminiZaOcenjivanjeDTO terminiZaOcenjivanjeDTO){
 		
 		RegistrovaniKorisnik regKor = loginService.findByEmailAndImeAndPrezime(emailKorisnika, imeKorisnika, prezimeKorisnika);
 		Bioskop bio = bioskopService.findByNaziv(terminiZaOcenjivanjeDTO.getBioskopPozoriste());
