@@ -29,7 +29,7 @@
   			<li><a data-toggle="pill" href="#repertoar">Repertoar</a></li>
   			<li><a data-toggle="pill" href="#konfiguracija">Konfuguracija sala</a></li>
   			<li><a data-toggle="pill" href="#projekcije-tab">Termini projekcija</a></li>
-  			<li><a data-toggle="pill" href="#statistika">Izvestaj - statistika</a></li>
+  			<li><a data-toggle="pill" href="#statistika"onclick="dobaviStatistiku()">Izvestaj - statistika</a></li>
   			<li><a data-toggle="pill" href="#licni-podaci" onclick="postaviPodatkeAdminaNaFormu('jovaperic')">Licni podaci</a></li>
 		</ul>
 
@@ -640,7 +640,31 @@
     			</form>
   			</div>
   			<div id="statistika" class="tab-pane fade">
-    			<h3>U IZRADI</h3>
+  				<div class="row"></div>
+  				<div class="row">
+  					<div class="col-sm-2"><label id="ambijentRejtingLabela" style="margin-top:25px">Rejting ambijenta:</label></div>
+  					<div class="col-sm-2"><label id="ambijentRejtingZvezde" style="margin-top:25px"></label></div>
+  				</div>
+  				<div class="row">
+  					<div class="col-sm-5"><h4 style="margin-top:25px">Prosecne ocene predstava/projekcija</h4></div>
+  				</div>
+  				<div class="row">
+  					<div class="col-sm-6">
+  						<div class="scrollable" style="height:200px; width:700px;  overflow-y:scroll; margin-top:25px" >
+							<table class="table table-hover" id="tabela_pojedinacne_ocene">
+								<thead>
+      								<tr>
+        								<th>Naslov</th>
+        								<th>Ocena</th>
+      								</tr>
+    							</thead>
+    							<tbody id="tabela_pojedinacne_ocene_sadrzaj">
+      			
+    							</tbody>
+  							</table>
+						</div>
+  					</div>
+  				</div>
   			</div>
   			<div id="licni-podaci" class="tab-pane fade">
     			<form class="form-horizontal" id="izmenaLicPod" action="#" style="margin-top:50px">

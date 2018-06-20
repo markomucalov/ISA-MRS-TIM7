@@ -893,3 +893,74 @@ function sacuvajTerminUBazi(){
 	    }
 	});
 }
+
+/*funkcije za STATISTIKU*/
+function dobaviStatistiku(){
+	$.get('http://localhost:8080/'+ulogovaniAdmin+'/dobaviStatistiku', function (data) {
+		var response = data;
+		var tabela = document.getElementById("tabela_pojedinacne_ocene_sadrzaj");
+		$("#tabela_pojedinacne_ocene").find("tr:not(:first)").remove();
+		
+		var ukupnaOcenaAmbijenta = 0;
+		var brojOcena = 0;
+		var projekcje = [];
+		
+		for(var counter in response){
+			ukupnaOcenaAmbijenta = ukupnaOcenaAmbijenta + response[counter].ocenaAmbijent;
+			brojOcena++;
+		}
+		
+		ukupnaOcenaAmbijenta = ukupnaOcenaAmbijenta/brojOcena;
+		document.getElementById("ambijentRejtingZvezde").innerHTML = prikaziOcene(ukupnaOcenaAmbijenta);
+		/*for(var counter in response){
+			var row = tabela.insertRow(counter);
+			var cell1 = row.insertCell(0);
+			var cell2 = row.insertCell(1);
+			var cell3 = row.insertCell(2);
+			var cell4 = row.insertCell(3);
+			
+			cell1.innerHTML = response[counter].naslov;
+			cell2.innerHTML = response[counter].pocetak;
+			cell3.innerHTML = response[counter].kraj;
+			cell4.innerHTML = response[counter].trajanje;
+		}*/
+	})
+}
+
+function prikaziOcene(ocena){
+	
+	var ocenaZvezde;
+	
+	if(ocena < 10){
+		ocenaZvezde = '<span class="rating-static rating-5"></span>';
+	}
+	else if(ocena >= 10 && ocena < 20){
+		ocenaZvezde = '<span class="rating-static rating-10"></span>';
+	}
+	else if(ocena >= 20 && ocena < 30){
+		ocenaZvezde = '<span class="rating-static rating-15"></span>';
+	}
+	else if(ocena >= 30 && ocena < 40){
+		ocenaZvezde = '<span class="rating-static rating-20"></span>';
+	}
+	else if(ocena >= 40 && ocena < 50){
+		ocenaZvezde = '<span class="rating-static rating-25"></span>';
+	}
+	else if(ocena >= 50 && ocena < 60){
+		ocenaZvezde = '<span class="rating-static rating-30"></span>';
+	}
+	else if(ocena >= 60 && ocena < 70){
+		ocenaZvezde = '<span class="rating-static rating-35"></span>';
+	}
+	else if(ocena >= 70 && ocena < 80){
+		ocenaZvezde = '<span class="rating-static rating-40"></span>';
+	}
+	else if(ocena >= 80 && ocena < 90){
+		ocenaZvezde = '<span class="rating-static rating-45"></span>';
+	}
+	else if(ocena >= 90){
+		ocenaZvezde = '<span class="rating-static rating-50"></span>';
+	}
+	
+	return ocenaZvezde;
+}

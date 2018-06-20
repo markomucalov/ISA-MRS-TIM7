@@ -1,6 +1,7 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.service;
 
 import java.sql.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,6 +37,16 @@ public class OcenaServiceImpl implements OcenaService{
 	public void save(Ocena ocena) {
 		ocenaRep.save(ocena);
 		
+	}
+
+	@Override
+	public List<Ocena> findByBioskop(Bioskop bioskop) {
+		return ocenaRep.findByBioskop(bioskop);
+	}
+
+	@Override
+	public List<Ocena> findByPozoriste(Pozoriste pozoriste) {
+		return ocenaRep.findByPozoriste(pozoriste);
 	}
 
 	

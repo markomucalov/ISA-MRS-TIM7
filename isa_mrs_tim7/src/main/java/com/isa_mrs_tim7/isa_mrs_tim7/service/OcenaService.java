@@ -1,6 +1,7 @@
 package com.isa_mrs_tim7.isa_mrs_tim7.service;
 
 import java.sql.Date;
+import java.util.List;
 
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Bioskop;
 import com.isa_mrs_tim7.isa_mrs_tim7.domain.Film;
@@ -13,4 +14,6 @@ public interface OcenaService {
 	Ocena findByBioskopAndFilmAndDatumAndRedAndKolona(Bioskop bioskop,Film film, Date datum, Integer red, Integer kolona);
 	Ocena findByPozoristeAndPredstavaAndDatumAndRedAndKolona(Pozoriste pozoriste,Predstava predstava, Date datum, Integer red, Integer kolona);
 	void save(Ocena ocena);
+	List<Ocena> findByBioskop(Bioskop bioskop);
+	List<Ocena> findByPozoriste(Pozoriste pozoriste);
 }

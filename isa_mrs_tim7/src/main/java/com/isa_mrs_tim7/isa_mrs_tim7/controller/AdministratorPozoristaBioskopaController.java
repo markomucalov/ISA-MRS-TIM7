@@ -33,6 +33,7 @@ import com.isa_mrs_tim7.isa_mrs_tim7.dto.KartaNaPopustuDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.KonfiguracijaDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SaleDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.SedisteDTO;
+import com.isa_mrs_tim7.isa_mrs_tim7.dto.StatistikaDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.TerminPredstaveProjekcijeDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.dto.TerminiZaOcenjivanjeDTO;
 import com.isa_mrs_tim7.isa_mrs_tim7.service.AdministratorPozoristaBioskopaService;
@@ -604,5 +605,33 @@ public class AdministratorPozoristaBioskopaController {
 		ocenaService.save(ocena);
 		return new ResponseEntity<String>(HttpStatus.OK);
 		
+	}
+	
+	@RequestMapping(value = "/{adminKorIme}/dobaviStatistiku", method=RequestMethod.GET)
+	public ResponseEntity<List<StatistikaDTO>> dobaviStatistiku(@PathVariable String adminKorIme){
+		
+		AdministratorPozoristaBioskopa admin = adminPozBioSer.findByKorIme(adminKorIme);
+		
+		Bioskop bio = admin.getBioskop();
+		Pozoriste poz = admin.getPozoriste();
+		List<Ocena> ocene;
+		List<StatistikaDTO> oceneDTO = new ArrayList<StatistikaDTO>();
+		if(bio != null) {
+			ocene = ocenaService.findByBioskop(bio);
+			for (Ocena ocena : ocene) {
+				StatistikaDTO s = new StatistikaDTO(ocena.getBioskop().getNaziv(), ocena.getFilm().getNaizv(), ocena.getOcenaAmbijent(), ocena.getOcenaPredstavaProjekcija());
+				oceneDTO.add(s);
+			}
+			return new ResponseEntity<List<StatistikaDTO>>(oceneDTO, HttpStatus.OK);
+		}
+		else if(poz != null) {
+			ocene = ocenaService.findByPozoriste(poz);
+			for (Ocena ocena : ocene) {
+				StatistikaDTO s = new StatistikaDTO(ocena.getPozoriste().getNaziv(), ocena.getPredstava().getNaizv(), ocena.getOcenaAmbijent(), ocena.getOcenaPredstavaProjekcija());
+				oceneDTO.add(s);
+			}
+			return new ResponseEntity<List<StatistikaDTO>>(oceneDTO, HttpStatus.OK);
+		}
+		return new ResponseEntity<List<StatistikaDTO>>(HttpStatus.NOT_FOUND);
 	}
 }
