@@ -122,6 +122,11 @@ public class ServisLoginImpl implements ServisLogin {
 	public RegistrovaniKorisnik findByEmailAndImeAndPrezime(String email, String ime, String prezime) {
 		return registrovaniKorisnikRep.findByEmailAndImeAndPrezime(email, ime, prezime);
 	}
+	@Override
+	public RegistrovaniKorisnik getByEmail(String email) {
+		// TODO Auto-generated method stub
+		return  registrovaniKorisnikRep.getByEmail(email);
+	}
 	
 
 }

@@ -21,7 +21,7 @@ public interface ServisLogin {
 	RegistrovaniKorisnik provjera (RegistrovaniKorisnik reg);
 	Page<RegistrovaniKorisnik> dodajSve(Pageable page);
 	RegistrovaniKorisnik findByEmailAndImeAndPrezime(String email, String ime, String prezime);
-	
+	RegistrovaniKorisnik getByEmail(String email);
 	
 	/*private List<RegistrovaniKorisnik> users;
 	@Autowired

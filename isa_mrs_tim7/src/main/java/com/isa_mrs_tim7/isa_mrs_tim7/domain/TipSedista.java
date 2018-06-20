@@ -4,5 +4,6 @@ public enum TipSedista {
 	OBICNO,
 	VIP,
 	ZA_BRZU_REZERVACIJU,
-	PROLAZ
+	PROLAZ,
+	REZERVISANO
 }

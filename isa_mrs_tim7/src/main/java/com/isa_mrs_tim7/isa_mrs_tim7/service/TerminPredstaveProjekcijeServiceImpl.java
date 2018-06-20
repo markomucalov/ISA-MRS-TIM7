@@ -32,5 +32,17 @@ public class TerminPredstaveProjekcijeServiceImpl implements TerminPredstaveProj
 		return terminRep.findBySalaAndDatumAndPocetak(sala, datum, pocetak);
 	}
 	
+	@Override
+	public List<TerminPredstaveProjekcije> findAll() {
+		
+		return terminRep.findAll();
+	}
+
+	@Override
+	public TerminPredstaveProjekcije findById(Long id) {
+		// TODO Auto-generated method stub
+		return terminRep.findById(id);
+	}
+	
 	
 }

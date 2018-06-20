@@ -19,5 +19,9 @@ public interface KartaRep extends JpaRepository<Karta, Long>{
 	
 	Karta findByRedAndKolonaAndTerminPredstaveProjekcije(Integer red, Integer kolona, TerminPredstaveProjekcije termin);
 
+	
+	
+	
+	
 	//Karta findById(Long id);
 }

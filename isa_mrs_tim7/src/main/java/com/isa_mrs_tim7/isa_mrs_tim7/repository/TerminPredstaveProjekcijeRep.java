@@ -16,4 +16,9 @@ public interface TerminPredstaveProjekcijeRep extends Repository<TerminPredstave
 	void save(TerminPredstaveProjekcije termin);
 	
 	TerminPredstaveProjekcije findBySalaAndDatumAndPocetak(Sala sala, Date datum, Time pocetak);
+	
+	
+	
+	 List<TerminPredstaveProjekcije> findAll();
+	 TerminPredstaveProjekcije findById(Long id);
 }

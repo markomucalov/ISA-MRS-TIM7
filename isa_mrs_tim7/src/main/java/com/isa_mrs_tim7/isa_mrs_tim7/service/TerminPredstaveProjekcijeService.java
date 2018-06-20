@@ -13,5 +13,8 @@ public interface TerminPredstaveProjekcijeService {
 	
 	void save(TerminPredstaveProjekcije termin);
 	
+	List<TerminPredstaveProjekcije> findAll();
+	TerminPredstaveProjekcije findById(Long id);
+	
 	TerminPredstaveProjekcije findBySalaAndDatumAndPocetak(Sala sala, Date datum, Time pocetak);
 }

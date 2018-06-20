@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import org.hibernate.annotations.common.util.impl.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,6 +69,13 @@ public class AdministratorPozoristaBioskopaController {
 	
 	@Autowired
 	TerminPredstaveProjekcijeService terminService;
+	
+	
+	
+	@Autowired
+	ServisLogin korisnikService;
+	
+	//private Logger logger = LoggerFactory.getLogger(this.getClass());
 	
 	@Autowired
 	FilmService filmService;
@@ -634,4 +642,98 @@ public class AdministratorPozoristaBioskopaController {
 		}
 		return new ResponseEntity<List<StatistikaDTO>>(HttpStatus.NOT_FOUND);
 	}
+	
+	@RequestMapping(value = "/getAllKarteZauzete", method=RequestMethod.GET)
+	public ResponseEntity<List<KartaNaPopustuDTO>> getAllKarteZauzete(){
+List<Karta> karteNaPopustu = kartaService.getKartaByTipKarte(TipKarte.REZERVISANO);
+		
+		Iterator<Karta> it = karteNaPopustu.iterator();
+		while (it.hasNext()) {
+			Karta karta = it.next();
+		    if (karta.getRegistrovaniKorisnik() != null) {
+		        it.remove();
+		    }
+		}
+		
+		List<KartaNaPopustuDTO> karteDTO = new ArrayList<KartaNaPopustuDTO>();
+		for (Karta karta : karteNaPopustu) {
+			String naslov = karta.getTerminPredstaveProjekcije().getNaslov();
+			String sala = karta.getTerminPredstaveProjekcije().getSala().getNaziv();
+			String datum = karta.getTerminPredstaveProjekcije().getDatum().toString();
+			String pocetak = karta.getTerminPredstaveProjekcije().getPocetak().toString();
+			String bioskopPozoriste = "";
+			
+			Integer novaCena = karta.getCena();
+			if(karta.getTerminPredstaveProjekcije().getSala().getBioskop() != null) {
+				bioskopPozoriste = karta.getTerminPredstaveProjekcije().getSala().getBioskop().getNaziv();
+			}
+			else if(karta.getTerminPredstaveProjekcije().getSala().getPozoriste() != null) {
+				bioskopPozoriste = karta.getTerminPredstaveProjekcije().getSala().getPozoriste().getNaziv();
+			}
+			karteDTO.add(new KartaNaPopustuDTO(bioskopPozoriste, naslov, datum, pocetak, sala,
+					karta.getRed(), karta.getKolona(), karta.getCena(), karta.getPopust(), novaCena));
+		}
+		
+		return new ResponseEntity<>(karteDTO, HttpStatus.OK);
+	}
+	
+	@RequestMapping(value = "/sacuvajKartu", method=RequestMethod.POST, consumes="application/json")
+	public ResponseEntity<String> updateKarta( @RequestBody KonfiguracijaDTO konfiguracijaDTO){
+		
+		RegistrovaniKorisnik adminPB = korisnikService.getByEmail(konfiguracijaDTO.getKorisnickoIme());
+		List<SedisteDTO> sedistaDTO = konfiguracijaDTO.getSedista();
+		Long terminId=Long.parseLong(konfiguracijaDTO.getSala());
+		TerminPredstaveProjekcije termin=terminService.findById(terminId);
+		
+		
+		if(adminPB == null) {
+			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		}
+		
+		
+			
+			for (SedisteDTO sedisteDTO : sedistaDTO) {
+				System.out.println(sedisteDTO.getTip());
+				String s=sedisteDTO.getTip();
+				System.out.println(s);
+				
+				if(s.equalsIgnoreCase("zauzeto")) {
+					//Karta ka=new Karta();
+					//System.out.println("Dana");
+					
+					
+					
+					Karta nova=kartaService.findByRedAndKolonaAndTerminPredstaveProjekcije(sedisteDTO.getRed(),sedisteDTO.getKolona(),termin );
+					//nova.setRegistrovaniKorisnik(adminPB);
+					//nova.setTipKarte(TipKarte.REZERVISANO);
+					
+					
+					try {
+						kartaService.update(nova,adminPB);
+					} catch (Exception e) {
+						
+						
+						//logger.error("Ops!", e);
+						// TODO Auto-generated catch block
+						return new ResponseEntity<String>(HttpStatus.I_AM_A_TEAPOT);
+					}
+					
+					return new ResponseEntity<String>("Uspesna rezervacija", HttpStatus.OK);
+				
+				}
+				
+				
+			}
+			
+			
+			
+			
+			
+		return new ResponseEntity<>(HttpStatus.OK);
+	}
+	
+	
+	
+	
+	
 }
