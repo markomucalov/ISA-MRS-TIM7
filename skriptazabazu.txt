@@ -1,0 +1,79 @@
+insert into bioskop (id, naziv, rejting, adresa_id) values (1, "CineStar Zrenjanin", 5, 7);
+insert into bioskop (id, naziv, rejting, adresa_id) values (2, "CineStar Novi Sad 4DX", 5, 3);
+insert into bioskop (id, naziv, rejting, adresa_id) values (3, "Takvud Cineplexx", 4, 4);
+insert into bioskop (id, naziv, rejting, adresa_id) values (4, "Roda Cineplexx", 3, 5);
+insert into bioskop (id, naziv, rejting, adresa_id) values (5, "Cineplexx Big Beograd", 5, 6);
+insert into adresa (id, broj, grad, ulica, zip) values(3, 11, "Novi Sad", "Sentandrejski put", 21000);
+insert into adresa (id, broj, grad, ulica, zip) values(4, 7, "Beograd", "Kneza Milosa", 11000);
+insert into adresa (id, broj, grad, ulica, zip) values(5, 83, "Beograd", "Pozeska", 11000);
+insert into adresa (id, broj, grad, ulica, zip) values(6, 84, "Beograd", "Visnjicka", 11000);
+insert into adresa (id, broj, grad, ulica, zip) values(7, 0, "Zrenjanin", "Novosadski put", 23000);
+
+insert into film (id, cena, ime_reditelja, naizv, opis, slika, trajanje, zanr, bioskop_id) values (1, 400, "Slobodan Sijan", "Ko to tamo peva", "Domaca komedija", 'H:\\ISA-MRS-tim07\\slike-razne\\ko_to_tamo_peva.jpg', '01:26:00', "komedija", 1);
+
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(1,"Pavle Vuisic");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(1,"Dragan Nikolic");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(1,"Danilo Bata Stojkovic");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(1,"Aleksandar Bercek");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(1,"Neda Arneric");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(1,"Milovoje Tomic");
+
+insert into film_ocene(film_id, ocene) values(1, 3);
+insert into film_ocene(film_id, ocene) values(1, 4);
+insert into film_ocene(film_id, ocene) values(1, 5);
+insert into film_ocene(film_id, ocene) values(1, 5);
+
+insert into film (id, cena, ime_reditelja, naizv, opis, slika, trajanje, zanr, bioskop_id) values (2, 350, "Alex Garland", "Ex machina", "film o vestackoj inteligenciji", 'H:\\ISA-MRS-tim07\\slike-razne\\ex_machina.png', '01:48:00', "naucna fantastika", 1);
+
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(2,"Domhnall Gleeson");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(2,"Alicia Vikander");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(2,"Oscar Isaac");
+
+insert into film_ocene(film_id, ocene) values(2, 3);
+insert into film_ocene(film_id, ocene) values(2, 4);
+insert into film_ocene(film_id, ocene) values(2, 3);
+insert into film_ocene(film_id, ocene) values(2, 4);
+
+insert into film (id, cena, ime_reditelja, naizv, opis, slika, trajanje, zanr, bioskop_id) values (3, 380, "Neveldine/Taylor", "Crank", "film sa dosta akcije", 'H:\\ISA-MRS-tim07\\slike-razne\\ex_machina.png', '01:28:00', "akcija", 1);
+
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(3,"Jason Statham");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(3,"Amy Smart");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(3,"Jose Pablo Cantillo");
+
+insert into film_ocene(film_id, ocene) values(3, 4);
+insert into film_ocene(film_id, ocene) values(3, 5);
+insert into film_ocene(film_id, ocene) values(3, 5);
+insert into film_ocene(film_id, ocene) values(3, 4);
+
+insert into film (id, cena, ime_reditelja, naizv, opis, slika, trajanje, zanr, bioskop_id) values (6, 290, "Brian De Palma", "Scarface", "klasik iz osamdesetih", 'H:\\ISA-MRS-tim07\\slike-razne\\scarface.jpg', '02:50:00', "akcija", 2);
+
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(6,"Al Pacino");
+
+insert into film_ocene(film_id, ocene) values(6, 5);
+insert into film_ocene(film_id, ocene) values(6, 5);
+insert into film_ocene(film_id, ocene) values(6, 5);
+insert into film_ocene(film_id, ocene) values(6, 5);
+
+insert into film (id, cena, ime_reditelja, naizv, opis, slika, trajanje, zanr, bioskop_id) values (5, 320, "Xavier Gens", "Hitman", "akcioni triler", 'H:\\ISA-MRS-tim07\\slike-razne\\hitman.jpg', '02:50:00', "akcija", 1);
+
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(5,"Timothy Olyphant");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(5,"Dougray Scott");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(5,"Robert Knepper");
+insert into film_spisak_glumaca(film_id, spisak_glumaca) values(5,"Olga Kurylenko");
+
+insert into film_ocene(film_id, ocene) values(5, 5);
+insert into film_ocene(film_id, ocene) values(5, 3);
+insert into film_ocene(film_id, ocene) values(5, 4);
+insert into film_ocene(film_id, ocene) values(5, 4);
+
+insert into predstava (id, cena, ime_reditelja, naizv, opis, slika, trajanje, zanr, pozoriste_id) values (1, 500, "Ivan Klemenc", "Seviljski berberin", "komicna opera", 'H:\\ISA-MRS-tim07\\slike-razne\\hitman.jpg', '02:10:00', "komedija", 1);
+
+insert into predstava_spisak_glumaca(predstava_id, spisak_glumaca) values(1,"Sasa Stulic");
+insert into predstava_spisak_glumaca(predstava_id, spisak_glumaca) values(1,"Nebojsa Babic");
+insert into predstava_spisak_glumaca(predstava_id, spisak_glumaca) values(1,"Jelena Koncar");
+insert into predstava_spisak_glumaca(predstava_id, spisak_glumaca) values(1,"Vasa Stajkic");
+
+insert into predstava_ocene(predstava_id, ocene) values(1, 5);
+insert into predstava_ocene(predstava_id, ocene) values(1, 3);
+insert into predstava_ocene(predstava_id, ocene) values(1, 4);
+insert into predstava_ocene(predstava_id, ocene) values(1, 4);
